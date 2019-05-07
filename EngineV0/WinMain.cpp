@@ -1,4 +1,5 @@
 #include "Window.h"
+#include <sstream>
 
 int CALLBACK WinMain(
 	HINSTANCE hInstance,
@@ -16,10 +17,6 @@ int CALLBACK WinMain(
 		{
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
-			if (wnd.kbd.KeyIsPressed(VK_MENU))
-			{
-				MessageBox(nullptr, "asfd", nullptr, MB_OK);
-			}
 		}
 		if (gResult == -1)
 		{
