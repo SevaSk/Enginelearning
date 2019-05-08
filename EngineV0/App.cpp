@@ -1,4 +1,6 @@
 #include "App.h"
+#include <sstream>
+#include <iomanip>
 
 App::App():
 	wnd(800,600, "SK Engine")
@@ -6,24 +8,21 @@ App::App():
 
 int App::Go()
 {
-	MSG msg;
-	BOOL gResult;
-	while ((gResult = GetMessage(&msg, nullptr, 0, 0)) > 0)
+	while (true)
 	{
-		TranslateMessage(&msg);
-		DispatchMessage(&msg);
-
+		//process messages return ecode if there is one
+		if (const auto ecode = Window::ProcessMessage()) 
+		{
+			return *ecode;
+		}
 		DoFrame();
 	}
-	// check if gResult failed
-	if (gResult == -1)
-	{
-		throw WND_LAST_EXCEPT();
-	}
-	return msg.wParam;
 }
 
 void App::DoFrame()
 {
-
+	const float t = timer.Peek();
+	std::ostringstream oss;
+	oss << "Time elapsed: " << std::setprecision(1) << std::fixed << t << "s";
+	wnd.SetTitle(oss.str().c_str());
 }
