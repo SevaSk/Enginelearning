@@ -52,7 +52,7 @@ Window::Window(int width, int height, const char* name):
 	wr.top = 100;
 	wr.bottom = height + wr.top;
 	if (AdjustWindowRect(&wr, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE) == 0) {
-		throw WND_LAST_EXCEPT;
+		throw WND_LAST_EXCEPT();
 	};
 
 	//create window & get hWnd
@@ -71,7 +71,7 @@ Window::Window(int width, int height, const char* name):
 	);
 	if (hWnd == nullptr)
 	{
-		throw WND_LAST_EXCEPT;
+		throw WND_LAST_EXCEPT();
 	}
 
 	ShowWindow(hWnd, SW_SHOWDEFAULT);
@@ -86,7 +86,7 @@ void Window::SetTitle(const std::string& title)
 {
 	if (SetWindowText(hWnd, title.c_str()) == 0)
 	{
-		throw WND_LAST_EXCEPT;
+		throw WND_LAST_EXCEPT();
 	}
 }
 
