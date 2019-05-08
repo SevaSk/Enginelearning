@@ -15,7 +15,7 @@ public:
 			LRelease,
 			RPress,
 			RRelease,
-			Wheelup,
+			WheelUp,
 			WheelDown,
 			Move,
 			Enter,

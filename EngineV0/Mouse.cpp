@@ -102,7 +102,7 @@ void Mouse::OnRightReleased(int x, int y) noexcept
 
 void Mouse::OnWheelUp(int x, int y) noexcept
 {
-	buffer.push(Mouse::Event(Mouse::Event::Type::Wheelup, *this));
+	buffer.push(Mouse::Event(Mouse::Event::Type::WheelUp, *this));
 	TrimBuffer();
 }
 
