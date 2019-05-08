@@ -97,12 +97,11 @@ std::optional<int> Window::ProcessMessage()
 	{
 		if (msg.message == WM_QUIT)
 		{
-			return msg.wParam;
+			return (int)msg.wParam;
 		}
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
 	}
-
 	return {};
 }
 
@@ -190,6 +189,7 @@ LRESULT Window::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 				mouse.OnMouseLeave();
 			}
 		}
+		break;
 	}
 	case WM_LBUTTONDOWN:
 	{
@@ -220,6 +220,7 @@ LRESULT Window::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 		const POINTS pt = MAKEPOINTS(lParam);
 		const int delta = GET_WHEEL_DELTA_WPARAM(wParam);
 		mouse.OnWheelDelta(pt.x, pt.y, delta);
+		break;
 	}
 //******* END MOUSE MSGS*******************************************/
 	}

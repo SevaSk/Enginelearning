@@ -10,7 +10,7 @@ int App::Go()
 {
 	while (true)
 	{
-		//process messages return ecode if there is one
+		//process messages return ecode if there is one (exite code))
 		if (const auto ecode = Window::ProcessMessage()) 
 		{
 			return *ecode;
