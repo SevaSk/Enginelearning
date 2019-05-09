@@ -118,7 +118,6 @@ LRESULT CALLBACK Window::HandleMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPAR
 	if (msg == WM_CREATE)
 	{
 		//extract ptr to window class from create data (magic)
-		//TODO read docs to understand lparam for WM_CREATE
 		const CREATESTRUCTW* const pCreate = reinterpret_cast<CREATESTRUCTW*>(lParam);
 		Window* const pWnd = static_cast<Window*>(pCreate->lpCreateParams);
 		// set WinAPI-managed user data to store ptr to window instance
