@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CustomWin.h"
+#include "MyException.h"
 #include <d3d11.h>
 
 class Graphics
