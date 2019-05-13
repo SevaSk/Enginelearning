@@ -103,7 +103,7 @@ void Graphics::ClearBuffer(float red, float green, float blue) noexcept
 	pContext->ClearRenderTargetView(pTarget.Get(), color);
 }
 
-void Graphics::DrawTestTriangle(float angle)
+void Graphics::DrawTestTriangle(float angle,float x, float y)
 {
 	namespace wrl = Microsoft::WRL;
 	HRESULT hr;
@@ -179,19 +179,17 @@ void Graphics::DrawTestTriangle(float angle)
 
 	struct ConstantBuffer
 	{
-		struct
-		{
-			float element[4][4];
-		} transformation;
+		dx::XMMATRIX transform;
 	};
 
-	const ConstantBuffer cb = 
+	const ConstantBuffer cb =
 	{
 		{
-			(0.3f/0.4f)*std::cos(angle), std::sin(angle), 0.0f, 0.0f,
-			(0.3f / 0.4f)*-std::sin(angle),std::cos(angle), 0.0f, 0.0f,
-			0.0f,						   0.0f,            1.0f, 0.0f,
-			0.0f,						   0.0f,            0.0f, 1.0f,
+			dx::XMMatrixTranspose(
+			dx::XMMatrixRotationZ(angle)*
+			dx::XMMatrixScaling(3.0f / 4.0f,1.0f,1.0f)*
+			dx::XMMatrixTranslation(x,y,0.0f)
+			)
 		}
 	};
 
