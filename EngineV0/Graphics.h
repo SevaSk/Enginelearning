@@ -3,12 +3,14 @@
 #include "CustomWin.h"
 #include "MyException.h"
 #include <d3d11.h>
+#include<d3dcompiler.h>
 #include <wrl.h>
 #include <vector>
 #include "DxgiInfoManager.h"
 
 class Graphics
 {
+	friend class Bindable;
 public:
 	class Exception : public MyException
 	{
@@ -55,7 +57,7 @@ public:
 	~Graphics() = default;
 	void EndFrame();
 	void ClearBuffer(float red, float green, float blue) noexcept;
-	void DrawTestTriangle(float angle,float x, float y);
+	void DrawTestTriangle(const std::vector<float>& campos);
 private:
 #ifndef NDEBUG
 	DxgiInfoManager infoManager;

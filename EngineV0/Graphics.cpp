@@ -2,7 +2,6 @@
 #include "dxerr.h"
 #include "GraphicsThrowMacros.h"
 #include <sstream>
-#include <d3dcompiler.h>
 #include <cmath>
 #include <DirectXMath.h>
 
@@ -125,7 +124,7 @@ void Graphics::ClearBuffer(float red, float green, float blue) noexcept
 	pContext->ClearDepthStencilView(pDSV.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0u);
 }
 
-void Graphics::DrawTestTriangle(float angle,float x, float z)
+void Graphics::DrawTestTriangle(const std::vector<float>& campos)
 {
 	namespace wrl = Microsoft::WRL;
 	HRESULT hr;
@@ -207,9 +206,10 @@ void Graphics::DrawTestTriangle(float angle,float x, float z)
 	{
 		{
 			dx::XMMatrixTranspose(
-			dx::XMMatrixRotationZ(angle)*
-			dx::XMMatrixRotationX(angle)*
-			dx::XMMatrixTranslation(x,0.0f,z+ 4.0f)*
+			dx::XMMatrixRotationX(0.0f)*
+			dx::XMMatrixRotationY(0.0f)*
+			dx::XMMatrixRotationZ(0.0f)*
+			dx::XMMatrixTranslation(campos[0],campos[1],4.0f)*
 			dx::XMMatrixPerspectiveLH(1.0f,3.0f/4.0f,0.5f,10.0f)
 			)
 		}

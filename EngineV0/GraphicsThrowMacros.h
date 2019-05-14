@@ -16,3 +16,11 @@
 #define GFX_THROW_INFO_ONLY(call) (call)
 #endif
 
+// macro for importing infomanager into local scope
+// this.GetInfoManager(Graphics& gfx) must exist
+#ifdef NDEBUG
+#define INFOMAN(gfx) HRESULT hr
+#else
+#define INFOMAN(gfx) HRESULT hr; DxgiInfoManager& infoManager = GetInfoManager((gfx))
+#endif
+
