@@ -1,6 +1,7 @@
 #include "Graphics.h"
 #include "dxerr.h"
 #include "GraphicsThrowMacros.h"
+#include <d3dcompiler.h>
 #include <sstream>
 #include <cmath>
 #include <DirectXMath.h>
@@ -116,6 +117,23 @@ void Graphics::EndFrame()
 		}
 	}
 }
+
+void Graphics::DrawIndexed(UINT count) noexcept(!IS_DEBUG)
+{
+	GFX_THROW_INFO_ONLY(pContext->DrawIndexed(count, 0u, 0u));
+}
+
+void Graphics::SetProjection(DirectX::FXMMATRIX proj) noexcept
+{
+	projection = proj;
+}
+
+DirectX::XMMATRIX Graphics::GetProjection() const noexcept
+{
+	return projection;
+}
+
+
 
 void Graphics::ClearBuffer(float red, float green, float blue) noexcept
 {

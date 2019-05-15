@@ -4,6 +4,7 @@
 #include "MyException.h"
 #include <d3d11.h>
 #include<d3dcompiler.h>
+#include <DirectXMath.h>
 #include <wrl.h>
 #include <vector>
 #include "DxgiInfoManager.h"
@@ -56,9 +57,13 @@ public:
 	Graphics& operator=(const Graphics&) = delete;
 	~Graphics() = default;
 	void EndFrame();
+	void DrawIndexed(UINT count) noexcept(!IS_DEBUG);
+	void SetProjection(DirectX::FXMMATRIX proj) noexcept;
+	DirectX::XMMATRIX GetProjection() const noexcept;
 	void ClearBuffer(float red, float green, float blue) noexcept;
 	void DrawTestTriangle(const std::vector<float>& campos);
 private:
+	DirectX::XMMATRIX projection;
 #ifndef NDEBUG
 	DxgiInfoManager infoManager;
 #endif 

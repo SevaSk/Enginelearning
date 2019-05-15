@@ -28,6 +28,9 @@
     <Filter Include="Source Files\Bindable">
       <UniqueIdentifier>{ccb65d73-f8fd-4715-a3ad-c92e5f045ea1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Drawable">
+      <UniqueIdentifier>{6ec61fde-8940-4cbc-b3d1-777b41dd2dca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -83,6 +86,12 @@
     </ClCompile>
     <ClCompile Include="PixelShader.cpp">
       <Filter>Source Files\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawable.cpp">
+      <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="Box.cpp">
+      <Filter>Source Files\Drawable</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -154,6 +163,12 @@
     </ClInclude>
     <ClInclude Include="BindableBase.h">
       <Filter>Header Files\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawable.h">
+      <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="Box.h">
+      <Filter>Header Files\Drawable</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
