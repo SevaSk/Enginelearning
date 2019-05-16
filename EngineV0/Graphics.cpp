@@ -305,7 +305,7 @@ void Graphics::DrawTestTriangle(const std::vector<float>& campos)
 	//Create pixel shader
 	wrl::ComPtr<ID3DBlob> pBlob;
 	wrl::ComPtr<ID3D11PixelShader> pPixelShader;
-	GFX_THROW_INFO(D3DReadFileToBlob(L"PixelShader.cso", &pBlob));
+	GFX_THROW_INFO(D3DReadFileToBlob(L"ColorIndexPS.cso", &pBlob));
 	GFX_THROW_INFO(pDevice->CreatePixelShader(pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &pPixelShader));
 
 
@@ -315,7 +315,7 @@ void Graphics::DrawTestTriangle(const std::vector<float>& campos)
 
 	//Create vertex Shader
 	wrl::ComPtr<ID3D11VertexShader> pVertexShader;
-	GFX_THROW_INFO(D3DReadFileToBlob(L"VertexShader.cso", &pBlob));
+	GFX_THROW_INFO(D3DReadFileToBlob(L"ColorIndexVS.cso", &pBlob));
 	GFX_THROW_INFO(pDevice->CreateVertexShader(pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &pVertexShader));
 
 	//bind vertex shader	

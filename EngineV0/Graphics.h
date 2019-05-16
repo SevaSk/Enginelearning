@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CustomWin.h"
+#include <random>
 #include "MyException.h"
 #include <d3d11.h>
 #include<d3dcompiler.h>
