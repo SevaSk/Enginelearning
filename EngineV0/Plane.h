@@ -52,6 +52,11 @@ public:
 		}
 		return{ std::move(verts),indices };
 	}
+	template<class V>
+	static IndexedTriangleList<V> Make()
+	{
+		return  MakeTesselated<V>(1, 1);
+	}
 };
 
 

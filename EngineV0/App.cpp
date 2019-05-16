@@ -3,6 +3,7 @@
 #include <iomanip>
 #include <memory>
 #include "Melon.h"
+#include "Sheet.h"
 #include "Pyramid.h"
 #include "Box.h"
 #include "Math.h"
@@ -35,6 +36,11 @@ App::App():
 				return std::make_unique<Melon>(
 					gfx, rng, adist, ddist,
 					odist, rdist, longdist, latdist
+					);
+			case 3:
+				return std::make_unique<Sheet>(
+					gfx, rng ,adist, ddist,
+					odist, rdist
 					);
 			default:
 				assert(false && "bad drawable type in factory");
@@ -84,7 +90,7 @@ void App::DoFrame()
 	wnd.Gfx().ClearBuffer(0.07f, 0.0f, 0.12f);
 	for (auto& b : drawables)
 	{
-		b->Update(dt);
+		b->Update(wnd.kbd.KeyIsPressed(VK_SPACE) ? 0.0f : dt);
 		b->Draw(wnd.Gfx());
 	}
 	wnd.Gfx().EndFrame();
