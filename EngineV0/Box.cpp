@@ -2,7 +2,7 @@
 #include "BindableBase.h"
 #include "GraphicsThrowMacros.h"
 #include "Cube.h"
-#include "Plane.h"
+#include "Sphere.h"
 
 Box::Box(Graphics& gfx,
 	std::mt19937& rng,
@@ -31,8 +31,8 @@ Box::Box(Graphics& gfx,
 			dx::XMFLOAT3 pos;
 		};
 
-		IndexedTriangleList<Vertex> model = Cube::Make<Vertex>();
-		model.Transform(dx::XMMatrixScaling(1.0f, 1.0f, 2.0f));
+		IndexedTriangleList<Vertex> model = Sphere::Make<Vertex>();
+		model.Transform(dx::XMMatrixScaling(1.0f, 1.0f, 0.5f));
 
 		AddStaticBind(std::make_unique<VertexBuffer>(gfx, model.vertices));
 
