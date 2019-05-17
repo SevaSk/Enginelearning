@@ -34,6 +34,9 @@
     <Filter Include="Header Files\Geometry">
       <UniqueIdentifier>{fff3bc54-3ac2-40b4-a687-57427fbbc118}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Images">
+      <UniqueIdentifier>{3039ca51-32e1-4dce-8d31-2ca29c0dd412}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -109,6 +112,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Sheet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WICTextureLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -227,6 +233,9 @@
     <ClInclude Include="Sheet.h">
       <Filter>Header Files\Drawable</Filter>
     </ClInclude>
+    <ClInclude Include="WICTextureLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="EngineV0.rc">
@@ -236,6 +245,9 @@
   <ItemGroup>
     <Image Include="tree.ico">
       <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="VarysTexture.png">
+      <Filter>Resource Files\Images</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>

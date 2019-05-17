@@ -20,7 +20,7 @@ App::App():
 		{}
 		std::unique_ptr<Drawable> operator()()
 		{
-			switch (typedist(rng))
+			switch (typedist(rng,4))
 			{
 			case 0:
 				return std::make_unique<Pyramid>(

@@ -38,12 +38,13 @@ Sheet::Sheet(Graphics& gfx,
 			} tex;
 		};
 		auto model = Plane::Make<Vertex>();
+		model.Transform(dx::XMMatrixScaling(2.5f, 2.5f, 0.0f));
 		model.vertices[0].tex = { 0.0f,0.0f };
 		model.vertices[1].tex = { 1.0f,0.0f };
 		model.vertices[2].tex = { 0.0f,1.0f };
 		model.vertices[3].tex = { 1.0f,1.0f };
 
-		AddStaticBind(std::make_unique<Texture>(gfx));
+		AddStaticBind(std::make_unique<Texture>(gfx, L"VarysTexture.png"));
 
 		AddStaticBind(std::make_unique<VertexBuffer>(gfx, model.vertices));
 
