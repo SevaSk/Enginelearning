@@ -6,6 +6,7 @@
 #include "Sheet.h"
 #include "Pyramid.h"
 #include "Box.h"
+#include "SkinnedBox.h"
 #include "Math.h"
 
 App::App():
@@ -20,7 +21,7 @@ App::App():
 		{}
 		std::unique_ptr<Drawable> operator()()
 		{
-			switch (typedist(rng,4))
+			switch (typedist(rng,5))
 			{
 			case 0:
 				return std::make_unique<Pyramid>(
@@ -40,6 +41,11 @@ App::App():
 			case 3:
 				return std::make_unique<Sheet>(
 					gfx, rng ,adist, ddist,
+					odist, rdist
+					);
+			case 4:
+				return std::make_unique<SkinnedBox>(
+					gfx, rng, adist, ddist,
 					odist, rdist
 					);
 			default:
