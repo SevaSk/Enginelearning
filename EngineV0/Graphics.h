@@ -61,9 +61,12 @@ public:
 	void DrawIndexed(UINT count) noexcept(!IS_DEBUG);
 	void SetProjection(DirectX::FXMMATRIX proj) noexcept;
 	DirectX::XMMATRIX GetProjection() const noexcept;
+	void SetCamera(DirectX::FXMMATRIX cam) noexcept;
+	DirectX::XMMATRIX GetCamera() const noexcept;
 	void ClearBuffer(float red, float green, float blue) noexcept;
 	void DrawTestTriangle(const std::vector<float>& campos);
 private:
+	DirectX::XMMATRIX camera;
 	DirectX::XMMATRIX projection;
 #ifndef NDEBUG
 	DxgiInfoManager infoManager;
