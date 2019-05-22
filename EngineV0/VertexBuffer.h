@@ -9,7 +9,8 @@ class VertexBuffer : public Bindable
 public:
 	template<class V>
 	VertexBuffer(Graphics& gfx, const std::vector<V>& vertices):
-		stride(sizeof(V))
+		stride(sizeof(V)),
+		count((UINT)std::size(vertices))
 	{
 		INFOMAN(gfx);
 
@@ -25,7 +26,11 @@ public:
 		GFX_THROW_INFO(GetDevice(gfx)->CreateBuffer(&bd, &sd, &pVertexBuffer));
 	}
 	void Bind(Graphics& gfx) noexcept override;
+
+	UINT GetCount() const noexcept;
+
 protected:
+	UINT count;
 	UINT stride;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> pVertexBuffer;
 };

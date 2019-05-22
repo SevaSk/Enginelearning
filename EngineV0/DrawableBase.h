@@ -1,6 +1,7 @@
 #pragma once
 #include "Drawable.h"
 #include "IndexBuffer.h"
+#include "VertexBuffer.h"
 
 template<class T>
 class DrawableBase : public Drawable
@@ -21,6 +22,15 @@ protected:
 		pIndexBuffer = ibuf.get();
 		staticBinds.push_back(std::move(ibuf));
 	}
+
+	//temp fix
+	void AddStaticVertexBuffer(std::unique_ptr<VertexBuffer> vbuf) noexcept(!IS_DEBUG)
+	{
+		pVertexBuffer = vbuf.get();
+		staticBinds.push_back(std::move(vbuf));
+	}
+
+
 	void SetIndexFromStatic() noexcept(!IS_DEBUG)
 	{
 		assert("Attempting to add index buffer a second time" && pIndexBuffer == nullptr);
@@ -34,6 +44,21 @@ protected:
 		}
 		assert("Failed to find index buffer in static binds" && pIndexBuffer != nullptr);
 	}
+	//temp fix
+	void SetVertexFromStatic() noexcept(!IS_DEBUG)
+	{
+		for (const auto& b : staticBinds)
+		{
+			if (const auto p = dynamic_cast<VertexBuffer*>(b.get()))
+			{
+				pVertexBuffer = p;
+				return;
+			}
+		}
+		assert("Failed to find index buffer in static binds" && pIndexBuffer != nullptr);
+	}
+
+
 private:
 	const std::vector<std::unique_ptr<Bindable>>& GetStaticBinds() const noexcept override
 	{

@@ -1,6 +1,7 @@
 #include "Drawable.h"
 #include "GraphicsThrowMacros.h"
 #include "IndexBuffer.h"
+#include "VertexBuffer.h"
 #include <cassert>
 #include <typeinfo>
 
@@ -14,7 +15,9 @@ void Drawable::Draw(Graphics& gfx) const noexcept(!IS_DEBUG)
 	{
 		b->Bind(gfx);
 	}
-	gfx.DrawIndexed(pIndexBuffer->GetCount());
+	//gfx.DrawIndexed(pIndexBuffer->GetCount());
+	
+	gfx.DrawNonIndexed(pVertexBuffer->GetCount());
 }
 
 void Drawable::AddBind(std::unique_ptr<Bindable> bind) noexcept(!IS_DEBUG)
@@ -28,4 +31,11 @@ void Drawable::AddIndexBuffer(std::unique_ptr<IndexBuffer> ibuf) noexcept(!IS_DE
 	assert("Attempting to add index buffer a second time" && pIndexBuffer == nullptr);
 	pIndexBuffer = ibuf.get();
 	binds.push_back(std::move(ibuf));
+}
+
+//for drawing non index buffers temp fix 
+void Drawable::AddVertexBuffer(std::unique_ptr<VertexBuffer> vbuf) noexcept(!IS_DEBUG)
+{
+	pVertexBuffer = vbuf.get();
+	binds.push_back(std::move(vbuf));
 }
