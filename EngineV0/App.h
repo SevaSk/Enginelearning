@@ -1,7 +1,7 @@
-#pragma once
+	#pragma once
 #include "Window.h"
 #include "Timer.h"
-#include "Box.h"
+#include "Camera.h"
 
 class App
 {
@@ -16,6 +16,7 @@ private:
 	Window wnd;
 	Timer timer;
 	std::vector<std::unique_ptr<class Drawable>> drawables;
+	Camera cam;
 	static constexpr size_t nDrawables = 180;
 };
 
