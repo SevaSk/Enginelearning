@@ -11,15 +11,15 @@ public:
 	template<class V>
 	static IndexedTriangleList<V> Make()
 	{
-		constexpr float side = 2.0f;
+		constexpr float side = 0.03f;
 		std::vector<DirectX::XMFLOAT3> vertices;
-		for (float x = -2; x < 2; x+= side)
+		for (float x = -3; x < 3; x+= 2*side)
 		{
-			for (float y = -2; y < 2; y+= side)
+			for (float y = -3; y < 3; y+= 2*side)
 			{
-				for (float z = -2; z < 2; z+= side)
+				for (float z = -3; z < 3; z+= 2*side)
 				{
-					if (true)
+					if (conv({x,y,z}))
 					{
 
 						vertices.emplace_back( x-side, y-side, z-side); // 0
