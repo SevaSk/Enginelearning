@@ -350,7 +350,7 @@ void Graphics::DrawTestTriangle(const std::vector<float>& campos)
 		ied,
 		std::size(ied),
 		pBlob->GetBufferPointer(),
-		pBlob->GetBufferSize(),
+		(UINT)pBlob->GetBufferSize(),
 		&pInputLayout
 	));
 

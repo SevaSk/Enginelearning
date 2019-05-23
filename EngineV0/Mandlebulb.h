@@ -13,11 +13,11 @@ public:
 	{
 		constexpr float side = 0.03f;
 		std::vector<DirectX::XMFLOAT3> vertices;
-		for (float x = -3; x < 3; x+= 2*side)
+		for (float x = -5; x < 5; x+= 2*side)
 		{
-			for (float y = -3; y < 3; y+= 2*side)
+			for (float y = -5; y < 5; y+= 2*side)
 			{
-				for (float z = -3; z < 3; z+= 2*side)
+				for (float z = -5; z < 5; z+= 2*side)
 				{
 					if (conv({x,y,z}))
 					{
