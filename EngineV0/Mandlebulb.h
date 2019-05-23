@@ -39,17 +39,32 @@ public:
 		for (size_t i = 0; i < vertices.size(); i++)
 		{
 			verts[i].pos = vertices[i];
-			verts[i].color = { i * 17 % 255, i * 19 % 255, i * 7 % 255 };
+			if (i % 4 == 0)
+			{
+				verts[i].n = { 0.0f,-1.0f,0.0f };
+			}
+			else if (i % 4 == 1)
+			{
+				verts[i].n = { 1.0f,0.0f,0.0f };
+			}
+			else if (i % 4 == 2)
+			{
+				verts[i].n = { 0.0f,1.0f,0.0f };
+			}
+			else if (i % 4 == 3)
+			{
+				verts[i].n = { 0.0f,0.0f,-1.0f };
+			}
 		}
 		std::vector<unsigned short> indices;
 		for (unsigned short i = 0; i < verts.size(); i += 8)
 		{
-			unsigned short arr[36] = {  0 + i, 2 + i, 1 + i, 2 + i, 3 + i, 1 + i,
-					1 + i, 3 + i, 5 + i, 3 + i, 7 + i, 5 + i,
-					2 + i, 6 + i, 3 + i, 3 + i, 6 + i, 7 + i,
-					4 + i, 5 + i, 7 + i, 4 + i, 7 + i, 6 + i,
-					0 + i, 4 + i, 2 + i, 2 + i, 4 + i, 6 + i,
-					0 + i, 1 + i, 4 + i, 1 + i, 5 + i, 4 + i };
+			unsigned short arr[36] = {  0u + i, 2u + i, 1u + i, 2u + i, 3u + i, 1u + i,
+					1u + i, 3u + i, 5u + i, 3u + i, 7u + i, 5u + i,
+					2u + i, 6u + i, 3u + i, 3u + i, 6u + i, 7u + i,
+					4u + i, 5u + i, 7u + i, 4u + i, 7u + i, 6u + i,
+					0u + i, 4u + i, 2u + i, 2u + i, 4u + i, 6u + i,
+					0u + i, 1u + i, 4u + i, 1u + i, 5u + i, 4u + i };
 			indices.insert(indices.end(), arr,std::end(arr));
 		}
 

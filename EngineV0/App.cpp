@@ -67,9 +67,9 @@ App::App():
 		std::uniform_int_distribution<int> typedist{ 0,2 };
 	};
 
-	Factory f(wnd.Gfx());
-	drawables.reserve(nDrawables);
-	std::generate_n(std::back_inserter(drawables), nDrawables, f);
+	//Factory f(wnd.Gfx());
+	//drawables.reserve(nDrawables);
+	//std::generate_n(std::back_inserter(drawables), nDrawables, f);
 
 	drawables.push_back(std::make_unique<Fractals>(wnd.Gfx()));
 
@@ -104,7 +104,7 @@ void App::DoFrame()
 	wnd.Gfx().SetCamera(cam.GetMatrix());
 	for (auto& b : drawables)
 	{
-		b->Update(wnd.kbd.KeyIsPressed(VK_SPACE) ? 0.0f : dt);
+		b->Update(wnd.kbd.KeyIsPressed(VK_CONTROL) ? 0.0f : dt);
 		b->Draw(wnd.Gfx());
 	}
 	wnd.Gfx().EndFrame();
