@@ -108,7 +108,7 @@ public:
 	template<class V>
 	static IndexedTriangleList<V> MakeVoxel()
 	{
-		constexpr float side = 1.0f / 2.0f;
+		constexpr float side = 1.0f / 8.0f;
 		std::vector<V> vertices(24);
 
 		vertices[0].pos = { -side, -side, -side }; // 0

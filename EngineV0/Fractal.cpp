@@ -3,9 +3,19 @@
 
 Fractal::Fractal(Graphics& gfx)
 {
-	for (float x = -2; x < 2; x+= 1.0f/1.0f)
+	constexpr float voxLen = 1.0f / 4.0f;
+	for (float x = 0; x < 3; x+= voxLen)
 	{
-		voxels.push_back(std::make_unique<Voxel>(gfx,x,0.0f,0.0f));
+		for (float y = 0; y < 3; y+= voxLen)
+		{
+			for (float z = 0; z < 3; z+= voxLen)
+			{
+				if (true)
+				{
+				voxels.push_back(std::make_unique<Voxel>(gfx,x,y,z));
+				}
+			}
+		}
 	}
 
 }

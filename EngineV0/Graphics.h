@@ -13,6 +13,7 @@
 class Graphics
 {
 	friend class Bindable;
+	friend class ComputeShader;
 public:
 	class Exception : public MyException
 	{
