@@ -6,7 +6,8 @@
 #include "Sheet.h"
 #include "Pyramid.h"
 #include "Box.h"
-#include "Fractals.h"
+#include "Voxel.h"
+#include "Fractal.h"
 #include "SkinnedBox.h"
 #include "Math.h"
 
@@ -71,8 +72,7 @@ App::App():
 	//drawables.reserve(nDrawables);
 	//std::generate_n(std::back_inserter(drawables), nDrawables, f);
 
-	drawables.push_back(std::make_unique<Fractals>(wnd.Gfx()));
-
+	fractals.push_back(std::make_unique<Fractal>(wnd.Gfx()));
 	wnd.Gfx().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
 }
 
@@ -107,5 +107,11 @@ void App::DoFrame()
 		b->Update(wnd.kbd.KeyIsPressed(VK_CONTROL) ? 0.0f : dt);
 		b->Draw(wnd.Gfx());
 	}
+	for (auto& b : fractals)
+	{
+		b->Update(wnd.kbd.KeyIsPressed(VK_CONTROL) ? 0.0f : dt);
+		b->Draw(wnd.Gfx());
+	}
+	
 	wnd.Gfx().EndFrame();
 }

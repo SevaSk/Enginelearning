@@ -1,9 +1,12 @@
-#include "Fractals.h"
+#include "Voxel.h"
 #include "BindableBase.h"
 #include "GraphicsThrowMacros.h"
-#include "Mandlebulb.h"
+#include "Cube.h"
 
-Fractals::Fractals(Graphics & gfx)
+Voxel::Voxel(Graphics & gfx, float x, float y, float z ):
+	x(x),
+	y(y),
+	z(z)
 {
 	namespace dx = DirectX;
 
@@ -15,7 +18,7 @@ Fractals::Fractals(Graphics & gfx)
 			dx::XMFLOAT3 n;
 		};
 
-		auto model = Mandlebulb::Make<Vertex>();
+		auto model = Cube::MakeVoxel<Vertex>();
 		AddStaticBind(std::make_unique<VertexBuffer>(gfx, model.vertices));
 		auto pvs = std::make_unique<VertexShader>(gfx, L"PhongBinnVS.cso");
 
@@ -39,19 +42,21 @@ Fractals::Fractals(Graphics & gfx)
 		SetIndexFromStatic();
 	}
 
+	
 	AddBind(std::make_unique<TransformCbuf>(gfx, *this));
 
 }
 
-void Fractals::Update(float dt) noexcept
+void Voxel::Update(float dt) noexcept
 {
 
 }
 
-DirectX::XMMATRIX Fractals::GetTransformXM() const noexcept
+
+DirectX::XMMATRIX Voxel::GetTransformXM() const noexcept
 {
 	return
 		DirectX::XMMatrixRotationRollPitchYaw(0.0f, 0.0f, 0.0f)*
-		DirectX::XMMatrixTranslation(0.0f, 0.0f, 0.0f)*
+		DirectX::XMMatrixTranslation(x, y, z)*
 		DirectX::XMMatrixRotationRollPitchYaw(0.0f, 0.0f, 0.0f);
 }

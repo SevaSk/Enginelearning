@@ -154,7 +154,8 @@
     <ClCompile Include="Drawable.cpp" />
     <ClCompile Include="dxerr.cpp" />
     <ClCompile Include="DXgiInforManager.cpp" />
-    <ClCompile Include="Fractals.cpp" />
+    <ClCompile Include="Fractal.cpp" />
+    <ClCompile Include="Voxel.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="IndexBuffer.cpp" />
     <ClCompile Include="InputLayout.cpp" />
@@ -192,7 +193,8 @@
     <ClInclude Include="DrawableBase.h" />
     <ClInclude Include="dxerr.h" />
     <ClInclude Include="DxgiInfoManager.h" />
-    <ClInclude Include="Fractals.h" />
+    <ClInclude Include="Fractal.h" />
+    <ClInclude Include="Voxel.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="GraphicsThrowMacros.h" />
     <ClInclude Include="IndexBuffer.h" />
