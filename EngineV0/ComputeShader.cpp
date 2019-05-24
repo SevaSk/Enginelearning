@@ -9,7 +9,7 @@ ComputeShader::ComputeShader(Graphics& gfx, const LPCWSTR path)
 	Microsoft::WRL::ComPtr<ID3DBlob> pBlob;
 	Microsoft::WRL::ComPtr<ID3DBlob> pErrorBlob;
 
-	D3DCompileFromFile(
+	GFX_THROW_INFO(D3DCompileFromFile(
 		L"ComputeShader.hlsl",
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE,
@@ -18,12 +18,12 @@ ComputeShader::ComputeShader(Graphics& gfx, const LPCWSTR path)
 		D3DCOMPILE_PARTIAL_PRECISION || D3DCOMPILE_ENABLE_STRICTNESS,
 		0,
 		&pBlob,
-		&pErrorBlob);
+		&pErrorBlob));
 
-	gfx.pDevice.Get()->CreateComputeShader(pBlob->GetBufferPointer(),
+	GFX_THROW_INFO(gfx.pDevice.Get()->CreateComputeShader(pBlob->GetBufferPointer(),
 		pBlob->GetBufferSize(),
 		nullptr,
-		&pComputeShader);
+		&pComputeShader));
 
 }
 

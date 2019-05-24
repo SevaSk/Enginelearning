@@ -8,7 +8,7 @@ cbuffer CBuf
 struct VSOut
 {
     float3 worldPos : Position;
-    float3 normal : Normal;
+	float3 normal : Normal;
     float4 pos : SV_Position;
 };
 

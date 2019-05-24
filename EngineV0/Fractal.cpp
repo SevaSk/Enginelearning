@@ -1,14 +1,15 @@
 #include "Fractal.h"
 #include "GraphicsThrowMacros.h"
+#include "ConvergenceFuncs.h"
 
 Fractal::Fractal(Graphics& gfx)
 {
 	constexpr float voxLen = 1.0f / 4.0f;
-	for (float x = 0; x < 3; x+= voxLen)
+	for (float x = 0; x < 5; x+= voxLen)
 	{
-		for (float y = 0; y < 3; y+= voxLen)
+		for (float y = 0; y < 5; y+= voxLen)
 		{
-			for (float z = 0; z < 3; z+= voxLen)
+			for (float z = 0; z < 5; z+= voxLen)
 			{
 				if (true)
 				{
