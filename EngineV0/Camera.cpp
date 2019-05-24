@@ -63,6 +63,7 @@ void Camera::Update(float dt, Keyboard& kbd, Mouse& mouse) noexcept
 		Reset();
 	}
 
+
 	cam_rot = cam_rot*
 		dx::XMMatrixRotationY(float(-mouse.GetPosX() + mousex)*dt*dm)*
 		dx::XMMatrixRotationX(float(-mouse.GetPosY() + mousey)*dt*dm);
