@@ -115,7 +115,7 @@ void Graphics::EndFrame()
 	infoManager.Set();
 #endif 
 
-	if (FAILED(hr = pSwap->Present(1u, 0u)))
+	if (FAILED(hr = pSwap->Present(0u, 0u)))
 	{
 		if (hr == DXGI_ERROR_DEVICE_REMOVED)
 		{
