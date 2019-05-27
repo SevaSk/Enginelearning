@@ -44,8 +44,12 @@ bool convn2(DirectX::XMFLOAT3 vect)
 }
 
 
-bool convn4(DirectX::XMFLOAT3 vect)
+bool convn4(float x, float y, float z)
 {
+	DirectX::XMFLOAT3 vect;
+	vect.x = x;
+	vect.y = y;
+	vect.z = z;
 	DirectX::XMFLOAT3 c = vect;
 	for (int i = 0; i < 50; i++)
 	{

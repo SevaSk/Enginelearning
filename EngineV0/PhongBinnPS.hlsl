@@ -1,4 +1,4 @@
-
+static const float3 materialColor = { 0.7f,0.7f,0.9f };
 static const float3 lightpos = { 0.0f, 1.0f, 3.0f };
 static const float3 ambient = { 0.15f, 0.15f, 0.15f };
 static const float3 diffuseColor = { 1.0f, 1.0f, 1.0f };
@@ -17,6 +17,6 @@ float4 main(float3 worldPos : Position, float3 n : Normal) : SV_Target
 
     const float3 diffuse = diffuseColor * diffuseIntensity * att * max(0.0f, dot(dirToL, n));
 
-    return float4(saturate(diffuse + ambient), 1.0f);
+    return float4(saturate(diffuse + ambient) * materialColor, 1.0f);
     
 }
