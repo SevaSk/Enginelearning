@@ -4,6 +4,7 @@
 #include <DirectXMath.h>
 #include "MarchingCubesLookUpTable.h"
 #include <algorithm>
+#include <map>
 
 
 
@@ -16,6 +17,7 @@ public:
 
 		std::vector<unsigned short> indices;
 		std::vector<DirectX::XMFLOAT3> vertices;
+		std::vector<DirectX::XMFLOAT3> normals;
 		int offset = 0;
 
 		for (float xi = -sizex; xi < sizex; xi+= 2*tes)
@@ -44,7 +46,7 @@ public:
 					edgesToVertices[04] = { xi - tes ,yi, zi - tes };
 					edgesToVertices[40] = { xi - tes ,yi, zi - tes };
 
-					edgesToVertices[45] = { xi ,yi +tes, zi - tes };
+					edgesToVertices[45] = { xi ,yi + tes, zi - tes };
 					edgesToVertices[54] = { xi ,yi + tes, zi - tes };
 					edgesToVertices[57] = { xi + tes , yi + tes, zi };
 					edgesToVertices[75] = { xi + tes , yi + tes, zi };
@@ -81,9 +83,7 @@ public:
 					std::transform(cell.vertexIndex, cell.vertexIndex + cell.GetTriangleCount() * 3, std::back_inserter(cellIndices), [&offset](int value) {return value + offset;});
 
 					indices.insert(indices.end(), cellIndices.begin(), cellIndices.end());
-					offset += cell.GetVertexCount();
-
-
+					offset += cell.GetVertexCount(); 
 				}
 			}
 		}
@@ -92,6 +92,20 @@ public:
 		for (size_t i = 0; i < vertices.size(); i++)
 		{
 			verts[i].pos = vertices[i];
+		}
+		for (size_t i = 0; i < indices.size(); i+=3)
+		{
+			DirectX::XMVECTOR v1 = DirectX::XMLoadFloat3(&vertices[indices[i]]);
+			DirectX::XMVECTOR v2 = DirectX::XMLoadFloat3(&vertices[indices[i+1]]);
+			DirectX::XMVECTOR v3 = DirectX::XMLoadFloat3(&vertices[indices[i+2]]);
+
+			DirectX::XMFLOAT3 n;
+			DirectX::XMVECTOR normal = DirectX::XMVector3Normalize(DirectX::XMVector3Cross(DirectX::XMVectorSubtract(v1, v2), DirectX::XMVectorSubtract(v3, v1)));
+			DirectX::XMStoreFloat3(&n, normal);
+
+			verts[indices[i]].n = n;
+			verts[indices[i+1]].n = n;
+			verts[indices[i+2]].n = n;
 		}
 
 		return{ std::move(verts),indices };

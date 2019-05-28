@@ -44,16 +44,12 @@ void Camera::Update(float dt, Keyboard& kbd, Mouse& mouse) noexcept
 
 	if (kbd.KeyIsPressed(VK_SPACE))
 	{
-		cam_pos = dx::XMVectorAdd(cam_pos,
-			dx::XMVectorScale(dx::XMVector3Transform(dx::XMVectorSet(0.0f, -1.0f, 0.0f, 0.0f), dx::XMMatrixInverse(nullptr, cam_rot)), dp)
-		);
+		cam_pos = dx::XMVectorAdd(cam_pos, dx::XMVECTOR{ 0.0f,1.0f,0.0f });
 	}
 
 	if (kbd.KeyIsPressed(VK_SHIFT))
 	{
-		cam_pos = dx::XMVectorAdd(cam_pos,
-			dx::XMVectorScale(dx::XMVector3Transform(dx::XMVectorSet(0.0f, +1.0f, 0.0f, 0.0f), dx::XMMatrixInverse(nullptr, cam_rot)), dp)
-		);
+		cam_pos = dx::XMVectorAdd(cam_pos, dx::XMVECTOR{ 0.0f,-1.0f,0.0f });
 	}
 
 
