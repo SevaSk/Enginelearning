@@ -18,11 +18,11 @@ public:
 		std::vector<DirectX::XMFLOAT3> vertices;
 		int offset = 0;
 
-		for (float xi = 0; xi < sizex; xi+= 2*tes)
+		for (float xi = -sizex; xi < sizex; xi+= 2*tes)
 		{
-			for (float yi = 0; yi < sizey; yi+=2*tes)
+			for (float yi = -sizex; yi < sizey; yi+=2*tes)
 			{
-				for (float zi = 0; zi < sizez; zi+=2*tes)
+				for (float zi = -sizex; zi < sizez; zi+=2*tes)
 				{
 
 					DirectX::XMFLOAT3 edgesToVertices[77];
@@ -62,7 +62,7 @@ public:
 					cubeIndex |= func(xi - tes, yi + tes, zi - tes) << 4;
 					cubeIndex |= func(xi + tes, yi + tes, zi - tes) << 5;
 					cubeIndex |= func(xi - tes, yi + tes, zi + tes) << 6;
-					cubeIndex |= func(xi + tes, yi + tes, zi + tes) << 1;
+					cubeIndex |= func(xi + tes, yi + tes, zi + tes) << 7;
 
 					//add vertices to vertex list	
 					for (int i = 0; i < regularCellData[regularCellClass[cubeIndex]].GetVertexCount(); i++)
@@ -70,22 +70,17 @@ public:
 						unsigned short edgedata = regularVertexData[cubeIndex][i];
 						unsigned short twoEdges = edgedata & 0xFF;
 						int edge1 = twoEdges / 16;
-						int edge2 = twoEdges % 12;
+						int edge2 = twoEdges % 16;
 
 						vertices.push_back(edgesToVertices[edge1 * 10 + edge2]);
 					}
 
-
 					//add indices to index list
 					RegularCellData cell = regularCellData[regularCellClass[cubeIndex]];
-					unsigned short cellIndices[15];
-					std::copy(cell.vertexIndex, cell.vertexIndex + cell.GetTriangleCount() * 3, cellIndices);
-					for (int i = 0; i < cell.GetTriangleCount() * 3; i++)
-					{
-						cellIndices[i] = cellIndices[i] + offset;
-					}
+					std::vector<unsigned short> cellIndices;
+					std::transform(cell.vertexIndex, cell.vertexIndex + cell.GetTriangleCount() * 3, std::back_inserter(cellIndices), [&offset](int value) {return value + offset;});
 
-					indices.insert(indices.end(), cellIndices, std::end(cellIndices));
+					indices.insert(indices.end(), cellIndices.begin(), cellIndices.end());
 					offset += cell.GetVertexCount();
 
 

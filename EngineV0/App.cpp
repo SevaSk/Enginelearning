@@ -104,6 +104,7 @@ void App::DoFrame()
 		wnd.mouse
 	);
 	wnd.Gfx().SetCamera(cam.GetMatrix());
+
 	for (auto& b : drawables)
 	{
 		b->Update(wnd.kbd.KeyIsPressed(VK_CONTROL) ? 0.0f : dt);

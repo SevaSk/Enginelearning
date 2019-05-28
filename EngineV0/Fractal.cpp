@@ -4,7 +4,7 @@
 
 Fractal::Fractal(Graphics& gfx)
 {
-	constexpr float voxLen = 1.0f / 16.0f;
+	constexpr float voxLen = 1.0f / 2.0f;
 	constexpr float scale = 1.0f / (2 * voxLen);
 	for (float x = -3; x < 3; x+= voxLen)
 	{
