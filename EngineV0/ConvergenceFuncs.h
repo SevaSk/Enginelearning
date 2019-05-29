@@ -44,18 +44,19 @@ bool convn2(DirectX::XMFLOAT3 vect)
 }
 
 
-bool convn4(float x, float y, float z)
+float convn4(float x, float y, float z)
 {
 	DirectX::XMFLOAT3 vect;
 	vect.x = x;
 	vect.y = y;
 	vect.z = z;
 	DirectX::XMFLOAT3 c = vect;
-	for (int i = 0; i < 20; i++)
+	int loops = 200;
+	for (int i = 0; i < loops; i++)
 	{
-		if (pow(vect.x, 2) + pow(vect.y, 2) + pow(vect.z, 2) > 50)
+		if (pow(vect.x, 2) + pow(vect.y, 2) + pow(vect.z, 2) > 500)
 		{
-			return false;
+			return 2.0f - (1.0f/(float)loops);
 		}
 
 		DirectX::XMFLOAT3 vect2;
@@ -64,5 +65,6 @@ bool convn4(float x, float y, float z)
 		vect2.z = pow(vect.z, 3) - 3*vect.z*pow(vect.x, 2) + vect.z*pow(vect.y, 2) + c.z;
 		vect = vect2;
 	}
-	return true;
+
+	return 0.0f;
 }
