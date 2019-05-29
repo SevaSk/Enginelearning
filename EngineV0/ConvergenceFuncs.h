@@ -51,7 +51,7 @@ bool convn4(float x, float y, float z)
 	vect.y = y;
 	vect.z = z;
 	DirectX::XMFLOAT3 c = vect;
-	for (int i = 0; i < 50; i++)
+	for (int i = 0; i < 20; i++)
 	{
 		if (pow(vect.x, 2) + pow(vect.y, 2) + pow(vect.z, 2) > 50)
 		{

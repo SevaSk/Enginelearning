@@ -4,9 +4,6 @@
 #include <DirectXMath.h>
 #include "MarchingCubesLookUpTable.h"
 #include <algorithm>
-#include <map>
-
-
 
 class MarchingCubesIso
 {
@@ -20,11 +17,11 @@ public:
 		std::vector<DirectX::XMFLOAT3> normals;
 		int offset = 0;
 
-		for (float xi = -sizex; xi < sizex; xi+= 2*tes)
+		for (float xi = -sizex; xi < sizex; xi += 2 * tes)
 		{
-			for (float yi = -sizex; yi < sizey; yi+=2*tes)
+			for (float yi = -sizex; yi < sizey; yi += 2 * tes)
 			{
-				for (float zi = -sizex; zi < sizez; zi+=2*tes)
+				for (float zi = -sizex; zi < sizez; zi += 2 * tes)
 				{
 
 					DirectX::XMFLOAT3 edgesToVertices[77];
@@ -52,7 +49,7 @@ public:
 					edgesToVertices[75] = { xi + tes , yi + tes, zi };
 					edgesToVertices[67] = { xi,yi + tes, zi + tes };
 					edgesToVertices[76] = { xi,yi + tes, zi + tes };
-					edgesToVertices[46] = { xi - tes ,yi + tes, zi};
+					edgesToVertices[46] = { xi - tes ,yi + tes, zi };
 					edgesToVertices[64] = { xi - tes ,yi + tes, zi };
 
 					int cubeIndex = 0;
@@ -80,10 +77,10 @@ public:
 					//add indices to index list
 					RegularCellData cell = regularCellData[regularCellClass[cubeIndex]];
 					std::vector<unsigned short> cellIndices;
-					std::transform(cell.vertexIndex, cell.vertexIndex + cell.GetTriangleCount() * 3, std::back_inserter(cellIndices), [&offset](int value) {return value + offset;});
+					std::transform(cell.vertexIndex, cell.vertexIndex + cell.GetTriangleCount() * 3, std::back_inserter(cellIndices), [&offset](int value) {return value + offset; });
 
 					indices.insert(indices.end(), cellIndices.begin(), cellIndices.end());
-					offset += cell.GetVertexCount(); 
+					offset += cell.GetVertexCount();
 				}
 			}
 		}
@@ -92,20 +89,25 @@ public:
 		for (size_t i = 0; i < vertices.size(); i++)
 		{
 			verts[i].pos = vertices[i];
+			verts[i].n = DirectX::XMFLOAT3{ 0.0f,0.0f,0.0f };
 		}
-		for (size_t i = 0; i < indices.size(); i+=3)
+		for (size_t i = 0; i < indices.size(); i += 3)
 		{
 			DirectX::XMVECTOR v1 = DirectX::XMLoadFloat3(&vertices[indices[i]]);
-			DirectX::XMVECTOR v2 = DirectX::XMLoadFloat3(&vertices[indices[i+1]]);
-			DirectX::XMVECTOR v3 = DirectX::XMLoadFloat3(&vertices[indices[i+2]]);
+			DirectX::XMVECTOR v2 = DirectX::XMLoadFloat3(&vertices[indices[i + 1]]);
+			DirectX::XMVECTOR v3 = DirectX::XMLoadFloat3(&vertices[indices[i + 2]]);
 
-			DirectX::XMFLOAT3 n;
-			DirectX::XMVECTOR normal = DirectX::XMVector3Normalize(DirectX::XMVector3Cross(DirectX::XMVectorSubtract(v1, v2), DirectX::XMVectorSubtract(v3, v1)));
-			DirectX::XMStoreFloat3(&n, normal);
-
-			verts[indices[i]].n = n;
-			verts[indices[i+1]].n = n;
-			verts[indices[i+2]].n = n;
+			DirectX::XMVECTOR normal = DirectX::XMVector3Normalize(
+				DirectX::XMVector3Cross(
+				DirectX::XMVectorSubtract(v2, v1), DirectX::XMVectorSubtract(v3, v1)));
+			for (size_t j = 0; j < 3; j++)
+			{
+				DirectX::XMFLOAT3 n;
+				DirectX::XMVECTOR currentn = DirectX::XMLoadFloat3(&(verts[indices[i+j]].n));
+				DirectX::XMVECTOR newn = DirectX::XMVector3Normalize(DirectX::XMVectorAdd(normal, currentn));
+				DirectX::XMStoreFloat3(&n, newn);
+				verts[indices[i+j]].n = n;
+			}
 		}
 
 		return{ std::move(verts),indices };

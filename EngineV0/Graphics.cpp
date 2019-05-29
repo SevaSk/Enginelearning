@@ -71,6 +71,26 @@ GFX_THROW_INFO(D3D11CreateDeviceAndSwapChain(
 
 	// bind depth state
 	pContext->OMSetDepthStencilState(pSDState.Get(), 1u);
+
+	//create rasterizer state
+
+	D3D11_RASTERIZER_DESC rsDesc = {};
+	rsDesc.FillMode = D3D11_FILL_SOLID;
+	rsDesc.CullMode = D3D11_CULL_NONE;
+	rsDesc.FrontCounterClockwise = FALSE;
+	rsDesc.DepthBias = 0;
+	rsDesc.DepthBiasClamp = 0.0f;
+	rsDesc.SlopeScaledDepthBias = 0.0f;
+	rsDesc.DepthClipEnable = TRUE;
+	rsDesc.ScissorEnable = FALSE;
+	rsDesc.MultisampleEnable = FALSE;
+	rsDesc.AntialiasedLineEnable = FALSE;
+	wrl::ComPtr<ID3D11RasterizerState> pRSState;
+	GFX_THROW_INFO(pDevice->CreateRasterizerState(&rsDesc, &pRSState));
+	//bind rasterizer state
+	pContext->RSSetState(pRSState.Get());
+
+
 	// create depth stensil texture
 	wrl::ComPtr<ID3D11Texture2D> pDepthStencil;
 	D3D11_TEXTURE2D_DESC descDepth = {};
