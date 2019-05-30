@@ -269,9 +269,6 @@
     <ClInclude Include="Voxel.h">
       <Filter>Header Files\Drawable</Filter>
     </ClInclude>
-    <ClInclude Include="ComputeShader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ConvergenceFuncs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -288,6 +285,9 @@
       <Filter>Header Files\Drawable</Filter>
     </ClInclude>
     <ClInclude Include="Sampler.h">
+      <Filter>Header Files\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="ComputeShader.h">
       <Filter>Header Files\Bindable</Filter>
     </ClInclude>
   </ItemGroup>
