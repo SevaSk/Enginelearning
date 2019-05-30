@@ -20,11 +20,11 @@ public:
 		std::vector<V> vertices;
 		vertices.emplace_back();
 		vertices.back().pos = { 0.0f,0.0f,-1.0f };
-		const auto iCenterNear = (unsigned short)(vertices.size() - 1);
+		const auto iCenterNear = (unsigned int)(vertices.size() - 1);
 		// far center
 		vertices.emplace_back();
 		vertices.back().pos = { 0.0f,0.0f,1.0f };
-		const auto iCenterFar = (unsigned short)(vertices.size() - 1);
+		const auto iCenterFar = (unsigned int)(vertices.size() - 1);
 
 		// base vertices
 		for (int iLong = 0; iLong < longDiv; iLong++)
@@ -51,8 +51,8 @@ public:
 		}
 
 		// side indices
-		std::vector<unsigned short> indices;
-		for (unsigned short iLong = 0; iLong < longDiv; iLong++)
+		std::vector<unsigned int> indices;
+		for (unsigned int iLong = 0; iLong < longDiv; iLong++)
 		{
 			const auto i = iLong * 2;
 			const auto mod = longDiv * 2;
@@ -65,7 +65,7 @@ public:
 		}
 
 		// base indices
-		for (unsigned short iLong = 0; iLong < longDiv; iLong++)
+		for (unsigned int iLong = 0; iLong < longDiv; iLong++)
 		{
 			const auto i = iLong * 2;
 			const auto mod = longDiv * 2;

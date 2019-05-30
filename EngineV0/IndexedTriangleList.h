@@ -7,7 +7,7 @@ class IndexedTriangleList
 {
 public:
 	IndexedTriangleList() = default;
-	IndexedTriangleList(std::vector<T> verts_in, std::vector<unsigned short> indices_in)
+	IndexedTriangleList(std::vector<T> verts_in, std::vector<unsigned int> indices_in)
 		:
 		vertices(std::move(verts_in)),
 		indices(std::move(indices_in))
@@ -29,5 +29,5 @@ public:
 
 public:
 	std::vector<T> vertices;
-	std::vector<unsigned short> indices;
+	std::vector<unsigned int> indices;
 };

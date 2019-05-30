@@ -12,9 +12,9 @@ public:
 	static IndexedTriangleList<V> Make(float func(float x, float y, float z), float sizex, float sizey, float sizez, float tes)
 	{
 
-		std::vector<unsigned short> indices;
+		std::vector<unsigned int> indices;
 		std::vector<DirectX::XMFLOAT3> vertices;
-		int offset = 0;
+		unsigned int offset = 0;
 
 		for (float xi = -sizex; xi < sizex; xi += 2 * tes)
 		{
@@ -24,6 +24,7 @@ public:
 				{
 					cubeVertData cubeData[8];
 					int cubeIndex = 0;
+					float xiMinTes = xi - tes;
 
 					cubeData[0].x = xi - tes;
 					cubeData[0].y = yi - tes;
@@ -74,7 +75,7 @@ public:
 					cubeIndex |= (cubeData[7].value < 1.0f) << 7;
 
 					//add vertices to vertex list	
-					for (int i = 0; i < regularCellData[regularCellClass[cubeIndex]].GetVertexCount(); i++)
+					for (unsigned short i = 0; i < regularCellData[regularCellClass[cubeIndex]].GetVertexCount(); i++)
 					{
 						unsigned short edgedata = regularVertexData[cubeIndex][i];
 						unsigned short twoverts = edgedata & 0xFF;
@@ -160,7 +161,7 @@ public:
 
 					//add indices to index list
 					RegularCellData cell = regularCellData[regularCellClass[cubeIndex]];
-					std::vector<unsigned short> cellIndices;
+					std::vector<unsigned int> cellIndices;
 					std::transform(cell.vertexIndex, cell.vertexIndex + cell.GetTriangleCount() * 3, std::back_inserter(cellIndices), [&offset](int value) {return value + offset; });
 
 					indices.insert(indices.end(), cellIndices.begin(), cellIndices.end());

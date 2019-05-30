@@ -56,10 +56,10 @@ public:
 				verts[i].n = { 0.0f,0.0f,-1.0f };
 			}
 		}
-		std::vector<unsigned short> indices;
-		for (unsigned short i = 0; i < verts.size(); i += 8)
+		std::vector<unsigned int> indices;
+		for (unsigned int i = 0; i < verts.size(); i += 8)
 		{
-			unsigned short arr[36] = {  0u + i, 2u + i, 1u + i, 2u + i, 3u + i, 1u + i,
+			unsigned int arr[36] = {  0u + i, 2u + i, 1u + i, 2u + i, 3u + i, 1u + i,
 					1u + i, 3u + i, 5u + i, 3u + i, 7u + i, 5u + i,
 					2u + i, 6u + i, 3u + i, 3u + i, 6u + i, 7u + i,
 					4u + i, 5u + i, 7u + i, 4u + i, 7u + i, 6u + i,
