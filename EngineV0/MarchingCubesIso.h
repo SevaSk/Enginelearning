@@ -24,7 +24,6 @@ public:
 				{
 					cubeVertData cubeData[8];
 					int cubeIndex = 0;
-					float xiMinTes = xi - tes;
 
 					cubeData[0].x = xi - tes;
 					cubeData[0].y = yi - tes;

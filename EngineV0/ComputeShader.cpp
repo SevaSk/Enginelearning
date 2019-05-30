@@ -3,15 +3,21 @@
 
 ComputeShader::ComputeShader(Graphics& gfx, const LPCWSTR path)
 {
-	unsigned int THREAD_GRID_SIZE_X = 20;
-	unsigned int THREAD_GRID_SIZE_Y = 20;
+	unsigned int THREAD_GRID_SIZE_X = 400;
+	unsigned int THREAD_GRID_SIZE_Y = 400;
 
 	INFOMAN(gfx);
 
 	//creating structered buffer
 	struct BufferStruct
 	{
-		UINT color;
+		struct
+		{
+			UINT r;
+			UINT g;
+			UINT b;
+			UINT a;
+		}color;
 	};
 
 	D3D11_BUFFER_DESC sbDesc = {};
@@ -54,18 +60,17 @@ ComputeShader::ComputeShader(Graphics& gfx, const LPCWSTR path)
 	Microsoft::WRL::ComPtr<ID3DBlob> pBlob;
 	Microsoft::WRL::ComPtr<ID3DBlob> pErrorBlob;
 
-	GFX_THROW_INFO(D3DCompile("ComputeShader.hlsl", std::strlen("ComputeShader.hlsl"), NULL, NULL, NULL, "main", profile, 0, 0, &pBlob, &pErrorBlob));
+	GFX_THROW_INFO(D3DCompileFromFile(L"ComputeShader.hlsl", NULL, NULL,"main", profile, 0, 0, &pBlob, &pErrorBlob));
 	GFX_THROW_INFO(gfx.pDevice.Get()->CreateComputeShader(pBlob->GetBufferPointer(), pBlob->GetBufferSize(), NULL, &pComputeShader));
 
 
 	//dispatch threads
 	UINT initCounts = 0;
-	gfx.pContext->CSSetUnorderedAccessViews(0, 1, pStructuredBufferUAV.GetAddressOf(),&initCounts);
-	gfx.pContext->CSSetShader(pComputeShader.Get(), NULL, 0);
-	gfx.pContext->Dispatch((UINT)20, (UINT)20, 1);
-
+	gfx.pContext.Get()->CSSetUnorderedAccessViews(0, 1, pStructuredBufferUAV.GetAddressOf(),&initCounts);
+	gfx.pContext.Get()->CSSetShader(pComputeShader.Get(), NULL, 0);
+	gfx.pContext.Get()->Dispatch(20,20,1);
 	ID3D11UnorderedAccessView* pNullUAV = NULL;
-	gfx.pContext->CSSetUnorderedAccessViews(0, 1, &pNullUAV, &initCounts);
+	gfx.pContext.Get()->CSSetUnorderedAccessViews(0, 1, &pNullUAV, &initCounts);
 
 }
 

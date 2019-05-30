@@ -19,7 +19,7 @@ MarchingCubeFractal::MarchingCubeFractal(Graphics& gfx, float x, float y, float 
 			dx::XMFLOAT3 n;
 		};
 
-		auto model = MarchingCubesIso::Make<Vertex>(convn4, 3, 3, 3, 1.0f / 32.0f);
+		auto model = MarchingCubesIso::Make<Vertex>(convn4, 3, 3, 3, 1.0f / 10.0f);
 		AddStaticBind(std::make_unique<VertexBuffer>(gfx, model.vertices));
 		auto pvs = std::make_unique<VertexShader>(gfx, L"PhongBinnVS.cso");
 
