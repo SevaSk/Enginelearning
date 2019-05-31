@@ -1,21 +1,22 @@
 struct BufferStruct {
-	uint4 color;
+	float3 pos;
 };
 
 static const int THREAD_GROUP_SIZE_X = 20;
 static const int THREAD_GROUP_SIZE_Y = 20;
-static const int THREAD_GROUPS_X = 20;
+static const int THREAD_GROUP_SIZE_Z = 1;
+
+static const int GROUPS_Y = 20;
+static const int GROUPS_X = 20;
+static const int GROUPS_Z = 1;
 
 RWStructuredBuffer<BufferStruct> OutBuff;
 
 [numthreads(THREAD_GROUP_SIZE_X, THREAD_GROUP_SIZE_Y, 1)]
-void main(uint3 threadIDInGroup : SV_GroupThreadID, uint3 groupID : SV_GroupID) 
+void main(uint3 grpID : SV_GroupID, uint3 id : SV_DispatchThreadId, uint3 grpTID : SV_GroupThreadId, uint grpIdx : SV_GroupIndex) 
 {
-	float4 color = float4((float)threadIDInGroup.x / THREAD_GROUP_SIZE_X,
-		(float)threadIDInGroup.y / THREAD_GROUP_SIZE_Y, 0, 1
-		) * 255;
-	int buffIndex = (groupID.y * THREAD_GROUP_SIZE_Y + threadIDInGroup.y)
-		* THREAD_GROUPS_X * THREAD_GROUP_SIZE_X
-		+ (groupID.x * THREAD_GROUP_SIZE_X + threadIDInGroup.x);
-	OutBuff[buffIndex].color = color;
+    int idx = id.x + (id.y * THREAD_GROUP_SIZE_X * GROUPS_X) + (id.z * THREAD_GROUP_SIZE_X * GROUPS_Y * THREAD_GROUP_SIZE_Y * GROUPS_Z);
+    float3 pos = (id + grpTID + (grpID * float3(THREAD_GROUP_SIZE_X, THREAD_GROUP_SIZE_Y, THREAD_GROUP_SIZE_Z)));
+    OutBuff[idx].pos = pos;
+
 }

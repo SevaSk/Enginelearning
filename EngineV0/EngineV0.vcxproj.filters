@@ -138,6 +138,12 @@
     <ClCompile Include="MarchingCubeFractal.cpp">
       <Filter>Source Files\Drawable</Filter>
     </ClCompile>
+    <ClCompile Include="ComputeShaderFractal.cpp">
+      <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="ConvergenceFuncs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CustomWin.h">
@@ -290,6 +296,9 @@
     <ClInclude Include="ComputeShader.h">
       <Filter>Header Files\Bindable</Filter>
     </ClInclude>
+    <ClInclude Include="ComputeShaderFractal.h">
+      <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="EngineV0.rc">
@@ -341,6 +350,9 @@
       <Filter>Shaders</Filter>
     </FxCompile>
     <FxCompile Include="ComputeShader.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="ComputeShaderVS.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
   </ItemGroup>

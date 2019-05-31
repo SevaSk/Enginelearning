@@ -1,10 +1,10 @@
-#include "MarchingCubeFractal.h"
+#include "ComputeShaderFractal.h"
 #include "BindableBase.h"
 #include "GraphicsThrowMacros.h"
 #include "MarchingCubesIso.h"
 
 
-MarchingCubeFractal::MarchingCubeFractal(Graphics& gfx, float x, float y, float z) :
+ComputeShaderFractal::ComputeShaderFractal(Graphics& gfx, float x, float y, float z) :
 	x(x),
 	y(y),
 	z(z)
@@ -20,8 +20,12 @@ MarchingCubeFractal::MarchingCubeFractal(Graphics& gfx, float x, float y, float 
 		};
 
 		auto model = MarchingCubesIso::Make<Vertex>(convn4, 3, 3, 3, 1.0f / 10.0f);
-		AddStaticBind(std::make_unique<VertexBuffer>(gfx, model.vertices));
-		auto pvs = std::make_unique<VertexShader>(gfx, L"PhongBinnVS.cso");
+		std::vector<Vertex> vertices;
+		Vertex testvertex;
+		vertices.push_back(testvertex);
+
+		AddStaticBind(std::make_unique<VertexBuffer>(gfx, vertices));
+		auto pvs = std::make_unique<VertexShader>(gfx, L"ComputeShaderVS.cso");
 
 		auto pvsbc = pvs->GetBytecode();
 		AddStaticBind(std::move(pvs));
@@ -31,12 +35,13 @@ MarchingCubeFractal::MarchingCubeFractal(Graphics& gfx, float x, float y, float 
 
 		const std::vector<D3D11_INPUT_ELEMENT_DESC> ied =
 		{
-			{ "Position",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0 },
 			{ "Normal",0,DXGI_FORMAT_R32G32B32_FLOAT,0,12,D3D11_INPUT_PER_VERTEX_DATA,0 }
 		};
 		AddStaticBind(std::make_unique<InputLayout>(gfx, ied, pvsbc));
 
 		AddStaticBind(std::make_unique<Topology>(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
+
+		AddStaticBind(std::make_unique<ComputeShader>(gfx, L"Path"));
 
 
 	}
@@ -50,13 +55,13 @@ MarchingCubeFractal::MarchingCubeFractal(Graphics& gfx, float x, float y, float 
 
 }
 
-void MarchingCubeFractal::Update(float dt) noexcept
+void ComputeShaderFractal::Update(float dt) noexcept
 {
 
 }
 
 
-DirectX::XMMATRIX MarchingCubeFractal::GetTransformXM() const noexcept
+DirectX::XMMATRIX ComputeShaderFractal::GetTransformXM() const noexcept
 {
 	return
 		DirectX::XMMatrixRotationRollPitchYaw(0.0f, 0.0f, 0.0f)*

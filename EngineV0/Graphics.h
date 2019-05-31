@@ -4,7 +4,7 @@
 #include <random>
 #include "MyException.h"
 #include <d3d11.h>
-#include<d3dcompiler.h>
+#include <d3dcompiler.h>
 #include <DirectXMath.h>
 #include <wrl.h>
 #include <vector>
@@ -13,7 +13,6 @@
 class Graphics
 {
 	friend class Bindable;
-	friend class ComputeShader;
 public:
 	class Exception : public MyException
 	{

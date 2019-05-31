@@ -1,13 +1,16 @@
 #pragma once
 
-#include "Graphics.h"
+#include "Bindable.h"
 
-class ComputeShader 
+class ComputeShader : public Bindable
 {
 public:
 	ComputeShader(Graphics& gfx, const LPCWSTR path);
+	void Bind(Graphics& gfx) noexcept override;
 protected:
 	Microsoft::WRL::ComPtr<ID3D11ComputeShader> pComputeShader;
-	static DxgiInfoManager& GetInfoManager(Graphics& gfx) noexcept(!IS_DEBUG);
+	Microsoft::WRL::ComPtr<ID3D11Buffer>  pStructuredBuffer;
+	Microsoft::WRL::ComPtr<ID3D11UnorderedAccessView> pStructuredBufferUAV;
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> pStructuredBufferSRV;
 };
 

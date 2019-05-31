@@ -3,10 +3,10 @@
 #include "DrawableBase.h"
 #include "ConvergenceFuncs.h"
 
-class MarchingCubeFractal : public DrawableBase<MarchingCubeFractal>
+class ComputeShaderFractal : public DrawableBase<ComputeShaderFractal>
 {
 public:
-	MarchingCubeFractal(Graphics& gfx, float x, float y, float z);
+	ComputeShaderFractal(Graphics& gfx, float x, float y, float z);
 	void Update(float dt) noexcept override;
 	DirectX::XMMATRIX GetTransformXM() const noexcept override;
 
@@ -15,4 +15,6 @@ private:
 	float y;
 	float z;
 };
+
+
 
