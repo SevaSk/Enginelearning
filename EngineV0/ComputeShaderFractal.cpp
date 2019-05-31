@@ -13,30 +13,29 @@ ComputeShaderFractal::ComputeShaderFractal(Graphics& gfx, float x, float y, floa
 
 	if (!IsStaticInitialized())
 	{
-		struct Vertex
-		{
-			dx::XMFLOAT3 pos;
-			dx::XMFLOAT3 n;
-		};
 
-		auto model = MarchingCubesIso::Make<Vertex>(convn4, 3, 3, 3, 1.0f / 10.0f);
-		std::vector<Vertex> vertices;
-		Vertex testvertex;
-		vertices.push_back(testvertex);
-
-		AddStaticBind(std::make_unique<VertexBuffer>(gfx, vertices));
+		// AddStaticBind(std::make_unique<VertexBuffer>(gfx, vertices));
 		auto pvs = std::make_unique<VertexShader>(gfx, L"ComputeShaderVS.cso");
 
 		auto pvsbc = pvs->GetBytecode();
 		AddStaticBind(std::move(pvs));
 
 		AddStaticBind(std::make_unique<PixelShader>(gfx, L"PhongBinnPS.cso"));
-		AddStaticIndexBuffer(std::make_unique<IndexBuffer>(gfx, model.indices));
+
+		std::vector<unsigned int> indices;
+		for (unsigned int i = 0; i < 194481; i++)
+		{
+			indices.push_back(i);
+		}
+
+		AddStaticIndexBuffer(std::make_unique<IndexBuffer>(gfx,indices));
 
 		const std::vector<D3D11_INPUT_ELEMENT_DESC> ied =
 		{
+			{ "Position",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0 },
 			{ "Normal",0,DXGI_FORMAT_R32G32B32_FLOAT,0,12,D3D11_INPUT_PER_VERTEX_DATA,0 }
 		};
+		
 		AddStaticBind(std::make_unique<InputLayout>(gfx, ied, pvsbc));
 
 		AddStaticBind(std::make_unique<Topology>(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));

@@ -77,7 +77,7 @@ App::App():
 	//fractals.push_back(std::make_unique<Fractal>(wnd.Gfx()));
 	
 	drawables.push_back(std::make_unique<ComputeShaderFractal>(wnd.Gfx(), 1.0f, 1.0f, 1.0f));
-	drawables.push_back(std::make_unique<MarchingCubeFractal>(wnd.Gfx(), 1.0f, 1.0f, 1.0f));
+	//drawables.push_back(std::make_unique<MarchingCubeFractal>(wnd.Gfx(), 1.0f, 1.0f, 1.0f));
 	wnd.Gfx().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
 }
 

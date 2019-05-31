@@ -10,6 +10,7 @@ struct BufferStruct
 };
 
 StructuredBuffer<BufferStruct> InBuff;
+static const float3 n = { 0.0f, 1.0f, 0.0f };
 
 struct VSOut
 {
@@ -18,7 +19,7 @@ struct VSOut
     float4 pos : SV_Position;
 };
 
-VSOut main(float3 n : Normal, in uint id : SV_VertexID)
+VSOut main(uint id : SV_VertexID)
 {
     VSOut vso;
     vso.worldPos = (float3) mul(float4( InBuff[id].pos, 1.0f), model);

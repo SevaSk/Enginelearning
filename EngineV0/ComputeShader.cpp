@@ -3,15 +3,17 @@
 
 ComputeShader::ComputeShader(Graphics& gfx, const LPCWSTR path)
 {
-	unsigned int THREAD_GRID_SIZE_X = 400;
-	unsigned int THREAD_GRID_SIZE_Y = 400;
+	unsigned int THREAD_GRID_SIZE_X = 441;
+	unsigned int THREAD_GRID_SIZE_Y = 441;
 
 	INFOMAN(gfx);
 
 	//creating structered buffer
 	struct BufferStruct
 	{
-		DirectX::XMFLOAT3 pos;
+		float x;
+		float y;
+		float z;
 	};
 
 	D3D11_BUFFER_DESC sbDesc = {};
@@ -27,7 +29,7 @@ ComputeShader::ComputeShader(Graphics& gfx, const LPCWSTR path)
 	//creating UAV
 	D3D11_UNORDERED_ACCESS_VIEW_DESC sbUAVDesc;
 	sbUAVDesc.Buffer.FirstElement = 0;
-	sbUAVDesc.Buffer.Flags = 0;
+	sbUAVDesc.Buffer.Flags = D3D11_BUFFER_UAV_FLAG_COUNTER;
 	sbUAVDesc.Buffer.NumElements = THREAD_GRID_SIZE_X * THREAD_GRID_SIZE_Y;
 	sbUAVDesc.Format = DXGI_FORMAT_UNKNOWN;
 	sbUAVDesc.ViewDimension = D3D11_UAV_DIMENSION_BUFFER;
@@ -58,7 +60,8 @@ ComputeShader::ComputeShader(Graphics& gfx, const LPCWSTR path)
 	UINT initCounts = 0;
 	GetContext(gfx)->CSSetUnorderedAccessViews(0, 1, pStructuredBufferUAV.GetAddressOf(), &initCounts);
 	GetContext(gfx)->CSSetShader(pComputeShader.Get(), NULL, 0);
-	GetContext(gfx)->Dispatch(20, 20, 1);
+	GetContext(gfx)->Dispatch(21, 21, 1);
+
 
 	Microsoft::WRL::ComPtr<ID3D11UnorderedAccessView> pNullUAV = NULL;
 	GetContext(gfx)->CSSetUnorderedAccessViews(0, 1, &pNullUAV, &initCounts);
