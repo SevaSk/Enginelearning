@@ -7,6 +7,7 @@ cbuffer CBuf
 struct BufferStruct
 {
     float3 pos;
+    float padding;
 };
 
 StructuredBuffer<BufferStruct> InBuff;

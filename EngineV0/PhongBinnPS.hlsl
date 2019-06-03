@@ -1,6 +1,6 @@
 static const float3 materialColor = { 0.5f,0.5f,0.5f };
 static const float3 lightpos = { 0.0f, 30.0f, 0.0f };
-static const float3 ambient = { 0.15f, 0.15f, 0.15f };
+static const float3 ambient = { 1.00f, 1.00f, 1.00f };
 static const float3 diffuseColor = { 1.0f, 1.0f, 1.0f };
 static const float diffuseIntensity = 5000.0f;
 static const float attConst = 5.0f;
