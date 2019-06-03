@@ -23,12 +23,12 @@ ComputeShaderFractal::ComputeShaderFractal(Graphics& gfx, float x, float y, floa
 		AddStaticBind(std::make_unique<PixelShader>(gfx, L"PhongBinnPS.cso"));
 
 		std::vector<unsigned int> indices;
-		indices.reserve(15625000);
-		for (unsigned int i = 0; i < 15625000; i++)
+		indices.reserve(12*373248);
+		for (unsigned int i = 0; i < 12* 373248; i++)
 		{
 			indices.push_back(i);
 		}
-
+		
 		AddStaticIndexBuffer(std::make_unique<IndexBuffer>(gfx,indices));
 
 		const std::vector<D3D11_INPUT_ELEMENT_DESC> ied =
@@ -39,10 +39,9 @@ ComputeShaderFractal::ComputeShaderFractal(Graphics& gfx, float x, float y, floa
 		
 		AddStaticBind(std::make_unique<InputLayout>(gfx, ied, pvsbc));
 
-		AddStaticBind(std::make_unique<Topology>(gfx, D3D_PRIMITIVE_TOPOLOGY_POINTLIST));
+		AddStaticBind(std::make_unique<Topology>(gfx, D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
 
 		AddStaticBind(std::make_unique<ComputeShader>(gfx, L"Path"));
-
 
 	}
 	else
