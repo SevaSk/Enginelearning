@@ -36,7 +36,7 @@ static const uint edgeTable[256] =
 
 cbuffer CBuff
 {
-    int triTable[256][16];
+    int triTable[4096];
 };
 
 
@@ -135,7 +135,8 @@ void main(uint3 grpID : SV_GroupID, uint3 id : SV_DispatchThreadId, uint3 grpTID
         cubeIndex |= 128;
     }
 
-   [branch] if (edgeTable[cubeIndex] == 0 || 255)
+    [branch]
+    if (edgeTable[cubeIndex] == 0 || edgeTable[cubeIndex] == 255)
     {
         return;
     }
@@ -189,14 +190,20 @@ void main(uint3 grpID : SV_GroupID, uint3 id : SV_DispatchThreadId, uint3 grpTID
         vertlist[11] = v3 + float3(0.0, scale * 0.5, 0.0);
     }
 
-    uint nverts = 0;
-    uint idx = ((grpID.x + grpID.y * (GROUPS_X) + grpID.z * (GROUPS_X * GROUPS_Y)) * (THREAD_GROUP_SIZE_X * THREAD_GROUP_SIZE_Y * THREAD_GROUP_SIZE_Z) + grpTID.x + grpTID.y * (THREAD_GROUP_SIZE_X) + (THREAD_GROUP_SIZE_X * THREAD_GROUP_SIZE_Y) * grpTID.z) * 16;
-
-    [unroll(16)] for (uint i = 0; triTable[cubeIndex][i] != -1; i += 3)
+    [branch]
+    if (triTable[25] == 2 )
     {
-        OutBuff[idx + nverts].pos = vertlist[triTable[cubeIndex - 1][i]];
-        OutBuff[idx + nverts + 1].pos = vertlist[triTable[cubeIndex - 1][i + 1]];
-        OutBuff[idx + nverts + 2].pos = vertlist[triTable[cubeIndex - 1][i + 2]];
+        return;
+    }
+
+        uint nverts = 0;
+    uint idx = ((grpID.x + grpID.y * (GROUPS_X) + grpID.z * (GROUPS_X * GROUPS_Y)) * (THREAD_GROUP_SIZE_X * THREAD_GROUP_SIZE_Y * THREAD_GROUP_SIZE_Z) + grpTID.x + grpTID.y * (THREAD_GROUP_SIZE_X) + (THREAD_GROUP_SIZE_X * THREAD_GROUP_SIZE_Y) * grpTID.z) * 15;
+
+    [unroll(16)] for (uint i = 0; triTable[cubeIndex*16 + i] != -1; i += 3)
+    {
+        OutBuff[idx + nverts].pos = vertlist[triTable[cubeIndex*16 + i]];
+        OutBuff[idx + nverts + 1].pos = vertlist[triTable[cubeIndex*16 + i + 1]];
+        OutBuff[idx + nverts + 2].pos = vertlist[triTable[cubeIndex*16 + i + 2]];
         nverts += 3;
     }
 
