@@ -23,8 +23,8 @@ ComputeShaderFractal::ComputeShaderFractal(Graphics& gfx, float x, float y, floa
 		AddStaticBind(std::make_unique<PixelShader>(gfx, L"PhongBinnPS.cso"));
 
 		std::vector<unsigned int> indices;
-		indices.reserve(12*373248);
-		for (unsigned int i = 0; i < 12* 373248; i++)
+		indices.reserve(16*373248);
+		for (unsigned int i = 0; i < 16* 373248; i++)
 		{
 			indices.push_back(i);
 		}
