@@ -36,7 +36,7 @@ static const uint edgeTable[256] =
 
 cbuffer CBuff
 {
-    int triTable[4096];
+    int4 triTable[1024];
 };
 
 
@@ -84,14 +84,14 @@ void main(uint3 grpID : SV_GroupID, uint3 id : SV_DispatchThreadId, uint3 grpTID
 {
     
     float3 pos;
-    float scale = 3.0 / (THREAD_GROUP_SIZE_X * GROUPS_X);
+    const float scale = 6.0 / (THREAD_GROUP_SIZE_X * GROUPS_X);
     uint cubeIndex = 0;  
-    float3 initvert = float3(110.0, 110.0, 110.0);
+    const float3 initvert = float3(110.0, 110.0, 110.0);
     float3 vertlist[12] = { initvert, initvert, initvert, initvert, initvert, initvert, initvert, initvert, initvert, initvert, initvert, initvert };
 
-    pos.x = (grpID.x * (THREAD_GROUP_SIZE_X) + grpTID.x) * scale;
-    pos.y = (grpID.y * (THREAD_GROUP_SIZE_Y) + grpTID.y) * scale;
-    pos.z = (grpID.z * (THREAD_GROUP_SIZE_Z) + grpTID.z) * scale;
+    pos.x = (grpID.x * (THREAD_GROUP_SIZE_X) + grpTID.x) * scale  -3.0;
+    pos.y = (grpID.y * (THREAD_GROUP_SIZE_Y) + grpTID.y) * scale  -3.0;
+    pos.z = (grpID.z * (THREAD_GROUP_SIZE_Z) + grpTID.z) * scale  -3.0;
 
     float3 v0 = pos + float3(0.0, 0.0, scale);
 
@@ -190,22 +190,15 @@ void main(uint3 grpID : SV_GroupID, uint3 id : SV_DispatchThreadId, uint3 grpTID
         vertlist[11] = v3 + float3(0.0, scale * 0.5, 0.0);
     }
 
-    [branch]
-    if (triTable[25] == 2 )
-    {
-        return;
-    }
-
-        uint nverts = 0;
+    uint nverts = 0;
     uint idx = ((grpID.x + grpID.y * (GROUPS_X) + grpID.z * (GROUPS_X * GROUPS_Y)) * (THREAD_GROUP_SIZE_X * THREAD_GROUP_SIZE_Y * THREAD_GROUP_SIZE_Z) + grpTID.x + grpTID.y * (THREAD_GROUP_SIZE_X) + (THREAD_GROUP_SIZE_X * THREAD_GROUP_SIZE_Y) * grpTID.z) * 15;
 
-    [unroll(16)] for (uint i = 0; triTable[cubeIndex*16 + i] != -1; i += 3)
+    [unroll(16)]
+    for (uint i = 0; triTable[(cubeIndex * 16 + i) / 4][(cubeIndex * 16 + i) % 4] != -1; i += 3)
     {
-        OutBuff[idx + nverts].pos = vertlist[triTable[cubeIndex*16 + i]];
-        OutBuff[idx + nverts + 1].pos = vertlist[triTable[cubeIndex*16 + i + 1]];
-        OutBuff[idx + nverts + 2].pos = vertlist[triTable[cubeIndex*16 + i + 2]];
+        OutBuff[idx + nverts].pos = vertlist[triTable[(cubeIndex * 16 + i) / 4][(cubeIndex * 16 + i) % 4]];
+        OutBuff[idx + nverts + 1].pos = vertlist[triTable[(cubeIndex * 16 + i + 1) / 4][(cubeIndex * 16 + i + 1) % 4]];
+        OutBuff[idx + nverts + 2].pos = vertlist[triTable[(cubeIndex * 16 + i + 2) / 4][(cubeIndex * 16 + i + 2) % 4]];
         nverts += 3;
     }
-
-
 }
