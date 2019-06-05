@@ -42,8 +42,9 @@ cbuffer CBuff
 
 float convfunc(float3 vect)
 {
-    float3 c = vect;
-    uint loops = 200;
+    const float3 c = vect;
+    const uint loops = 200;
+    [loop]
     for (uint i = 0; i < loops; i++)
     {
         if (pow(vect.x, 2) + pow(vect.y, 2) + pow(vect.z, 2) > 500)
@@ -65,15 +66,17 @@ float convfunc(float3 vect)
 struct BufferStruct {
 	float3 pos;
     float padding;
+    float3 normal;
+    float padding2;
 };
 
-static const int THREAD_GROUP_SIZE_X = 8;
-static const int THREAD_GROUP_SIZE_Y = 8;
-static const int THREAD_GROUP_SIZE_Z = 8;
+static const uint THREAD_GROUP_SIZE_X = 2;
+static const uint THREAD_GROUP_SIZE_Y = 2;
+static const int THREAD_GROUP_SIZE_Z = 2;
 
-static const int GROUPS_Y = 9;
-static const int GROUPS_X = 9;
-static const int GROUPS_Z = 9;
+static const uint GROUPS_Y = 100;
+static const uint GROUPS_X = 100;
+static const uint GROUPS_Z = 100;
 
 
 
@@ -191,7 +194,7 @@ void main(uint3 grpID : SV_GroupID, uint3 id : SV_DispatchThreadId, uint3 grpTID
     }
 
     uint nverts = 0;
-    uint idx = ((grpID.x + grpID.y * (GROUPS_X) + grpID.z * (GROUPS_X * GROUPS_Y)) * (THREAD_GROUP_SIZE_X * THREAD_GROUP_SIZE_Y * THREAD_GROUP_SIZE_Z) + grpTID.x + grpTID.y * (THREAD_GROUP_SIZE_X) + (THREAD_GROUP_SIZE_X * THREAD_GROUP_SIZE_Y) * grpTID.z) * 15;
+    const uint idx = ((grpID.x + grpID.y * (GROUPS_X) + grpID.z * (GROUPS_X * GROUPS_Y)) * (THREAD_GROUP_SIZE_X * THREAD_GROUP_SIZE_Y * THREAD_GROUP_SIZE_Z) + grpTID.x + grpTID.y * (THREAD_GROUP_SIZE_X) + (THREAD_GROUP_SIZE_X * THREAD_GROUP_SIZE_Y) * grpTID.z) * 15;
 
     [unroll(16)]
     for (uint i = 0; triTable[(cubeIndex * 16 + i) / 4][(cubeIndex * 16 + i) % 4] != -1; i += 3)
@@ -199,6 +202,11 @@ void main(uint3 grpID : SV_GroupID, uint3 id : SV_DispatchThreadId, uint3 grpTID
         OutBuff[idx + nverts].pos = vertlist[triTable[(cubeIndex * 16 + i) / 4][(cubeIndex * 16 + i) % 4]];
         OutBuff[idx + nverts + 1].pos = vertlist[triTable[(cubeIndex * 16 + i + 1) / 4][(cubeIndex * 16 + i + 1) % 4]];
         OutBuff[idx + nverts + 2].pos = vertlist[triTable[(cubeIndex * 16 + i + 2) / 4][(cubeIndex * 16 + i + 2) % 4]];
+
+        const float3 normal = normalize(cross((OutBuff[idx + nverts + 1].pos - OutBuff[idx + nverts].pos), (OutBuff[idx + nverts + 2].pos - OutBuff[idx + nverts].pos)));
+        OutBuff[idx + nverts].normal = normal;
+        OutBuff[idx + nverts + 1].normal = normal;
+        OutBuff[idx + nverts + 2].normal = normal;
         nverts += 3;
     }
 }

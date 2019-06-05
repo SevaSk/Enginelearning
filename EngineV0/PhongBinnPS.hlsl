@@ -1,8 +1,8 @@
-static const float3 materialColor = { 0.5f,0.5f,0.5f };
-static const float3 lightpos = { 0.0f, 30.0f, 0.0f };
-static const float3 ambient = { 1.00f, 1.00f, 1.00f };
+static const float3 materialColor = { 0.7f, 0.7f, 0.9f };
+static const float3 lightpos = { 0.0f, -4.0f, 0.0f };
+static const float3 ambient = { 0.30f, 0.30f, 0.30f };
 static const float3 diffuseColor = { 1.0f, 1.0f, 1.0f };
-static const float diffuseIntensity = 5000.0f;
+static const float diffuseIntensity = 8.0f;
 static const float attConst = 5.0f;
 static const float attLin = 0.045f;
 static const float attQuad = 0.0075f;
