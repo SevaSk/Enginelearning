@@ -12,6 +12,7 @@ protected:
 	Microsoft::WRL::ComPtr<ID3D11Buffer>  pStructuredBuffer;
 	Microsoft::WRL::ComPtr<ID3D11UnorderedAccessView> pStructuredBufferUAV;
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> pStructuredBufferSRV;
-	Microsoft::WRL::ComPtr<ID3D11Buffer>  pConstantBuffer;
+	Microsoft::WRL::ComPtr<ID3D11Buffer> pConstantBuffer;
+	Microsoft::WRL::ComPtr<ID3D11Buffer> pConstantBuffer2;
 };
 

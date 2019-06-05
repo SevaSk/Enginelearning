@@ -16,7 +16,7 @@ void Drawable::Draw(Graphics& gfx) const noexcept(!IS_DEBUG)
 		b->Bind(gfx);
 	}
 
-	gfx.DrawIndexed(pIndexBuffer->GetCount());
+	gfx.DrawNonIndexed(15 * 512000);
 }
 
 void Drawable::AddBind(std::unique_ptr<Bindable> bind) noexcept(!IS_DEBUG)

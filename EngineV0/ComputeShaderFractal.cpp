@@ -22,14 +22,14 @@ ComputeShaderFractal::ComputeShaderFractal(Graphics& gfx, float x, float y, floa
 
 		AddStaticBind(std::make_unique<PixelShader>(gfx, L"PhongBinnPS.cso"));
 
-		std::vector<unsigned int> indices;
-		size_t a = indices.max_size();
-		for (unsigned int i = 0; i < 15* 10000; i++)
-		{
-			indices.push_back(i);
-		}
+		//std::vector<unsigned int> indices;
+		//size_t a = indices.max_size();
+		//for (unsigned int i = 0; i < 15* 10000; i++)
+		//{
+		//	indices.push_back(i);
+		//}
 		
-		AddStaticIndexBuffer(std::make_unique<IndexBuffer>(gfx,indices));
+		//AddStaticIndexBuffer(std::make_unique<IndexBuffer>(gfx,indices));
 
 		const std::vector<D3D11_INPUT_ELEMENT_DESC> ied =
 		{
