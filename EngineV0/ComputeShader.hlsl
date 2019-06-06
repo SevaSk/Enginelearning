@@ -8,7 +8,6 @@ cbuffer CBuff2 : register(b1)
     int4 edgeTable[64];
 }
 
-
 float convfunc(float3 vect)
 {
     const float3 c = vect;
@@ -31,12 +30,48 @@ float convfunc(float3 vect)
     return 0.0f;
 }
 
+float3 VertexInterp(float isolevel, float3 p1, float3 p2, float valp1, float valp2)
+{
+float mu;
+float3 p;
+   [branch]
+   if (abs(isolevel-valp1) < 0.00001)
+    {
+        return (p1);
+    }
+   [branch]
+   if (abs(isolevel-valp2) < 0.00001)
+    {
+        return (p2);
+    }
+   [branch]
+   if (abs(valp1-valp2) < 0.00001)
+    {
+        return (p1);
+    }
+
+   mu = (isolevel - valp1) / (valp2 - valp1);
+   p.x = p1.x + mu * (p2.x - p1.x);
+   p.y = p1.y + mu * (p2.y - p1.y);
+   p.z = p1.z + mu * (p2.z - p1.z);
+
+   return(p);
+
+}
 
 struct BufferStruct {
 	float3 pos;
     float3 normal;
     float3 color;
 };
+
+struct Cvert
+{
+    float3 pos;
+    float val;
+};
+
+
 
 static const uint THREAD_GROUP_SIZE_X = 8;
 static const uint THREAD_GROUP_SIZE_Y = 8;
@@ -46,13 +81,14 @@ static const uint GROUPS_Y = 50;
 static const uint GROUPS_X = 50;
 static const uint GROUPS_Z = 50;
 
-
+static const float isolevel = 1.0;
 
 RWStructuredBuffer<BufferStruct> OutBuff : register(u0);
 
 [numthreads(THREAD_GROUP_SIZE_X, THREAD_GROUP_SIZE_Y, THREAD_GROUP_SIZE_Z)]
 void main(uint3 grpID : SV_GroupID, uint3 id : SV_DispatchThreadId, uint3 grpTID : SV_GroupThreadId, uint grpIdx : SV_GroupIndex)
-{    
+{   
+
     float3 pos;
     const float scale = 6.0 / (THREAD_GROUP_SIZE_X * GROUPS_X);
     uint cubeIndex = 0;  
@@ -63,44 +99,67 @@ void main(uint3 grpID : SV_GroupID, uint3 id : SV_DispatchThreadId, uint3 grpTID
     pos.y = (grpID.y * (THREAD_GROUP_SIZE_Y) + grpTID.y) * scale  -3.0;
     pos.z = (grpID.z * (THREAD_GROUP_SIZE_Z) + grpTID.z) * scale  -3.0;
 
-    float3 v0 = pos + float3(0.0, 0.0, scale);
-
-    [branch] if (convfunc(v0) < 1.0)
+    Cvert v0;
+    v0.pos = pos + float3(0.0, 0.0, scale);
+    v0.val = convfunc(v0.pos);
+    [branch] 
+    if (v0.val < isolevel)
     {
         cubeIndex |= 1;
     }
-    float3 v1 = pos + float3(scale, 0.0, scale);
-    [branch] if (convfunc(v1) < 1.0)
+    Cvert v1;
+    v1.pos = pos + float3(scale, 0.0, scale);
+    v1.val = convfunc(v1.pos);
+    [branch]
+    if (v1.val < isolevel)
     {
         cubeIndex |= 2;
     }
-    float3 v2 = pos + float3(scale, 0.0, 0.0);
-    [branch] if (convfunc(v2) < 1.0)
+    Cvert v2;
+    v2.pos = pos + float3(scale, 0.0, 0.0);
+    v2.val = convfunc(v2.pos);
+    [branch]
+    if (v2.val < isolevel)
     {
         cubeIndex |= 4;
     }
-    float3 v3 = pos;
-   [branch] if (convfunc(v3) < 1.0)
+    Cvert v3;
+    v3.pos = pos;
+    v3.val = convfunc(v3.pos);
+   [branch]
+    if (v3.val < isolevel)
     {
         cubeIndex |= 8;
     }
-    float3 v4 = pos + float3(0.0, scale, scale);
-   [branch] if (convfunc(v4) < 1.0)
+    Cvert v4;
+    v4.pos = pos + float3(0.0, scale, scale);
+    v4.val = convfunc(v4.pos);
+   [branch]
+    if (v4.val < isolevel)
     {
         cubeIndex |= 16;
     }
-    float3 v5 = pos + float3(scale, scale, scale);
-    [branch] if (convfunc(v5) < 1.0)
+    Cvert v5;
+    v5.pos = pos + float3(scale, scale, scale);
+    v5.val = convfunc(v5.pos);
+    [branch]
+    if (v5.val < isolevel)
     {
         cubeIndex |= 32;
     }
-    float3 v6 = pos + float3(scale, scale, 0.0);
-   [branch] if (convfunc(v6) < 1.0)
+    Cvert v6;
+    v6.pos = pos + float3(scale, scale, 0.0);
+    v6.val = convfunc(v6.pos);
+   [branch]
+    if (v6.val < isolevel)
     {
         cubeIndex |= 64;
     }
-    float3 v7 = pos + float3(0.0, scale, 0.0);
-    [branch] if (convfunc(v7) < 1.0)
+    Cvert v7;
+    v7.pos = pos + float3(0.0, scale, 0.0);
+    v7.val = convfunc(v7.pos);
+    [branch]
+    if (v7.val < isolevel)
     {
         cubeIndex |= 128;
     }
@@ -110,66 +169,65 @@ void main(uint3 grpID : SV_GroupID, uint3 id : SV_DispatchThreadId, uint3 grpTID
     {
         return;
     }
-
     [branch]
     if (edgeTable[(cubeIndex / 4)][cubeIndex % 4] & 1)
     {
-        vertlist[0] = v0 + float3(scale * 0.5, 0.0, 0.0);
+        vertlist[0] = VertexInterp(isolevel, v0.pos, v1.pos, v0.val, v1.val);
     }
     [branch]
     if (edgeTable[(cubeIndex / 4)][cubeIndex % 4] & 2)
     {
-        vertlist[1] = v2 + float3(0.0, 0.0, scale * 0.5);
+        vertlist[1] = VertexInterp(isolevel, v1.pos, v2.pos, v1.val, v2.val);
     }  
    [branch]
     if (edgeTable[(cubeIndex / 4)][cubeIndex % 4] & 4)
     {
-        vertlist[2] = v3 + float3(scale * 0.5, 0.0, 0.0);
+        vertlist[2] = VertexInterp(isolevel, v2.pos, v3.pos, v2.val, v3.val);
     }
    [branch]
     if (edgeTable[(cubeIndex / 4)][cubeIndex % 4] & 8)
     {
-        vertlist[3] = v3 + float3(0.0, 0.0, scale * 0.5);
+        vertlist[3] = VertexInterp(isolevel, v3.pos, v0.pos, v3.val, v0.val);
     }
    [branch]
     if (edgeTable[(cubeIndex / 4)][cubeIndex % 4] & 16)
     {
-        vertlist[4] = v4 + float3(scale * 0.5, 0.0, 0.0);
+        vertlist[4] = VertexInterp(isolevel, v4.pos, v5.pos, v4.val, v5.val);
     }
    [branch]
     if (edgeTable[(cubeIndex / 4)][cubeIndex % 4] & 32)
     {
-        vertlist[5] = v6 + float3(0.0, 0.0, scale * 0.5);
+        vertlist[5] = VertexInterp(isolevel, v5.pos, v6.pos, v5.val, v6.val);
     }
     [branch]
     if (edgeTable[(cubeIndex / 4)][cubeIndex % 4] & 64)
     {
-        vertlist[6] = v7 + float3(scale * 0.5, 0.0, 0.0);
+        vertlist[6] = VertexInterp(isolevel, v6.pos, v7.pos, v6.val, v7.val);
     }
    [branch]
     if (edgeTable[(cubeIndex / 4)][cubeIndex % 4] & 128)
     {
-        vertlist[7] = v7 + float3(0.0, 0.0, scale * 0.5);
+        vertlist[7] = VertexInterp(isolevel, v7.pos, v4.pos, v7.val, v4.val);   
     }
     [branch]
     if (edgeTable[(cubeIndex / 4)][cubeIndex % 4] & 256)
     {
-        vertlist[8] = v0 + float3(0.0, scale * 0.5, 0.0);
+        vertlist[8] = VertexInterp(isolevel, v0.pos, v4.pos, v0.val, v4.val);
     }
     [branch]
     if (edgeTable[(cubeIndex / 4)][cubeIndex % 4] & 512)
     {
-        vertlist[9] = v1 + float3(0.0, scale * 0.5, 0.0);
+        vertlist[9] = VertexInterp(isolevel, v1.pos, v5.pos, v1.val, v5.val);
     }
     [branch]
     if (edgeTable[(cubeIndex / 4)][cubeIndex % 4] & 1024)
     {
-        vertlist[10] = v2 + float3(0.0, scale * 0.5, 0.0);
+        vertlist[10] = VertexInterp(isolevel, v2.pos, v6.pos, v2.val, v6.val);
     }
     [branch]
     if (edgeTable[(cubeIndex / 4)][cubeIndex % 4] & 2048)
     {
-        vertlist[11] = v3 + float3(0.0, scale * 0.5, 0.0);
+        vertlist[11] = VertexInterp(isolevel, v3.pos, v7.pos, v3.val, v7.val);
     }
 
 
@@ -183,16 +241,14 @@ void main(uint3 grpID : SV_GroupID, uint3 id : SV_DispatchThreadId, uint3 grpTID
         OutBuff[idx + nverts + 1].pos = vertlist[triTable[(cubeIndex * 16 + i + 1) / 4][(cubeIndex * 16 + i + 1) % 4]];
         OutBuff[idx + nverts + 2].pos = vertlist[triTable[(cubeIndex * 16 + i + 2) / 4][(cubeIndex * 16 + i + 2) % 4]];
 
-        const float3 normal = normalize(cross((OutBuff[idx + nverts + 1].pos - OutBuff[idx + nverts].pos), (OutBuff[idx + nverts + 2].pos - OutBuff[idx + nverts].pos)));
+        const float3 normal = normalize(cross((OutBuff[idx + nverts + 2].pos - OutBuff[idx + nverts].pos), (OutBuff[idx + nverts + 1].pos - OutBuff[idx + nverts].pos)));
         OutBuff[idx + nverts].normal = normal;
         OutBuff[idx + nverts + 1].normal = normal;
-        OutBuff[idx + nverts + 2].normal = normal;\
+        OutBuff[idx + nverts + 2].normal = normal;
 
         OutBuff[idx + nverts].color = float3(0.7,0.9,0.3);
         OutBuff[idx + nverts + 1].color = float3(0.7, 0.9, 0.3);
         OutBuff[idx + nverts + 2].color = float3(0.7, 0.9, 0.3);
         nverts += 3;
     }
-
- 
 }

@@ -1,22 +1,28 @@
-static const float3 materialColor = { 0.7f, 0.7f, 0.9f };
-static const float3 lightpos = { 0.0f, -4.0f, 0.0f };
-static const float3 ambient = { 0.30f, 0.30f, 0.30f };
+static const float3 lightPos = { 1.5f, 8.5f, 1.5f };
+static const float3 ambient = { 0.15f, 0.15f, 0.15f };
 static const float3 diffuseColor = { 1.0f, 1.0f, 1.0f };
-static const float diffuseIntensity = 8.0f;
-static const float attConst = 5.0f;
-static const float attLin = 0.045f;
-static const float attQuad = 0.0075f;
+static const float diffuseIntensity = 1.0f;
+static const float attConst = 1.0f;
+static const float attLin = 0.35f;
+static const float attQuad = 0.44f;
+static const float specularIntensity = 2.0f;
+static const float specularPower = 1.0f;
 
 float4 main(float3 worldPos : Position, float3 n : Normal, float3 color : Color) : SV_Target
 {
-    const float3 vToL = lightpos - worldPos;
+	// fragment to light vector data
+    const float3 vToL = lightPos - worldPos;
     const float distToL = length(vToL);
     const float3 dirToL = vToL / distToL;
-
-    const float3 att = 1.0f / (attConst + attLin * distToL + attQuad * (distToL * distToL));
-
+	// attenuation
+    const float att = 1.0f / (attConst + attLin * distToL + attQuad * (distToL * distToL));
+	// diffuse intensity
     const float3 diffuse = diffuseColor * diffuseIntensity * att * max(0.0f, dot(dirToL, n));
-
-    return float4(saturate(diffuse + ambient) * color, 1.0f);
-    
+	// reflected light vector
+    const float3 w = n * dot(vToL, n);
+    const float3 r = w * 2.0f - vToL;
+	// calculate specular intensity based on angle between viewing vector and reflection vector, narrow with power function
+    const float3 specular = att * (diffuseColor * diffuseIntensity) * specularIntensity * pow(max(0.0f, dot(normalize(-r), normalize(worldPos))), specularPower);
+	// final color
+    return float4(saturate((diffuse + ambient + specular) * color), 1.0f);
 }

@@ -52,6 +52,7 @@ void ComputeShaderFractal::Update(float dt) noexcept
 DirectX::XMMATRIX ComputeShaderFractal::GetTransformXM() const noexcept
 {
 	return
+		DirectX::XMMatrixTranslation(0.0,5.0,0.0)*
 		DirectX::XMMatrixRotationRollPitchYaw(0.0f, 0.0f, 0.0f)*
 		DirectX::XMMatrixTranslation(x, y, z)*
 		DirectX::XMMatrixRotationRollPitchYaw(0.0f, 0.0f, 0.0f);
