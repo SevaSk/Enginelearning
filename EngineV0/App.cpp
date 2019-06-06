@@ -100,7 +100,11 @@ App::~App()
 
 void App::DoFrame()
 {
-	auto dt = timer.Mark();
+	float dt = timer.Mark();
+	float fps = 1 / dt;
+	std::ostringstream oss;
+	oss << fps;
+	wnd.SetTitle(oss.str());
 	wnd.Gfx().ClearBuffer(0.07f, 0.0f, 0.12f);
 	cam.Update(dt,
 		wnd.kbd,

@@ -7,13 +7,10 @@ cbuffer CBuf
 struct BufferStruct
 {
     float3 pos;
-    float padding;
     float3 normal;
-    float padding2;
 };
 
 StructuredBuffer<BufferStruct> InBuff;
-static const float3 n = { 0.0f, 1.0f, 0.0f };
 
 struct VSOut
 {

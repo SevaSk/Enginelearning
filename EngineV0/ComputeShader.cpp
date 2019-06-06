@@ -3,15 +3,15 @@
 
 ComputeShader::ComputeShader(Graphics& gfx, const LPCWSTR path)
 {
-	constexpr unsigned int GROUPS_X = 10;
-	constexpr unsigned int GROUPS_Y = 10;
-	constexpr unsigned int GROUPS_Z = 10;
+	constexpr unsigned int GROUPS_X = 70;
+	constexpr unsigned int GROUPS_Y = 70;
+	constexpr unsigned int GROUPS_Z = 70;
 
 	constexpr unsigned int THREAD_GROUP_SIZE_X = 8;
 	constexpr unsigned int THREAD_GROUP_SIZE_Y = 8;
 	constexpr unsigned int THREAD_GROUP_SIZE_Z = 8;
 
-	constexpr unsigned int THREAD_GRID_SIZE_X = GROUPS_X * THREAD_GROUP_SIZE_X * 15;
+	constexpr unsigned int THREAD_GRID_SIZE_X = GROUPS_X * THREAD_GROUP_SIZE_X;
 	constexpr unsigned int THREAD_GRID_SIZE_Y = GROUPS_Y * THREAD_GROUP_SIZE_Y;
 	constexpr unsigned int THREAD_GRID_SIZE_Z = GROUPS_Z * THREAD_GROUP_SIZE_Z;
 
@@ -23,11 +23,9 @@ ComputeShader::ComputeShader(Graphics& gfx, const LPCWSTR path)
 		float x;
 		float y;
 		float z;
-		float padding;
 		float n1;
 		float n2;
 		float n3;
-		float padding2;
 	};
 
 	D3D11_BUFFER_DESC sbDesc = {};
@@ -44,7 +42,7 @@ ComputeShader::ComputeShader(Graphics& gfx, const LPCWSTR path)
 	D3D11_UNORDERED_ACCESS_VIEW_DESC sbUAVDesc;
 	sbUAVDesc.Buffer.FirstElement = 0;
 	sbUAVDesc.Buffer.Flags = D3D11_BUFFER_UAV_FLAG_COUNTER;
-	sbUAVDesc.Buffer.NumElements = THREAD_GRID_SIZE_X * THREAD_GRID_SIZE_Y *THREAD_GRID_SIZE_Z;
+	sbUAVDesc.Buffer.NumElements = THREAD_GRID_SIZE_X * THREAD_GRID_SIZE_Y * THREAD_GRID_SIZE_Z;
 	sbUAVDesc.Format = DXGI_FORMAT_UNKNOWN;
 	sbUAVDesc.ViewDimension = D3D11_UAV_DIMENSION_BUFFER;
 
@@ -417,7 +415,6 @@ ComputeShader::ComputeShader(Graphics& gfx, const LPCWSTR path)
 	GetContext(gfx)->CSSetUnorderedAccessViews(0, 1, pStructuredBufferUAV.GetAddressOf(), &initCounts);
 	GetContext(gfx)->CSSetShader(pComputeShader.Get(), NULL, 0);
 	GetContext(gfx)->Dispatch(GROUPS_X, GROUPS_Y, GROUPS_Z);
-
 
 	Microsoft::WRL::ComPtr<ID3D11UnorderedAccessView> pNullUAV = NULL;
 	GetContext(gfx)->CSSetUnorderedAccessViews(0, 1, &pNullUAV, &initCounts);

@@ -34,27 +34,24 @@ float convfunc(float3 vect)
 
 struct BufferStruct {
 	float3 pos;
-    float padding;
     float3 normal;
-    float padding2;
 };
 
 static const uint THREAD_GROUP_SIZE_X = 8;
 static const uint THREAD_GROUP_SIZE_Y = 8;
 static const uint THREAD_GROUP_SIZE_Z = 8;
 
-static const uint GROUPS_Y = 10;
-static const uint GROUPS_X = 10;
-static const uint GROUPS_Z = 10;
+static const uint GROUPS_Y = 70;
+static const uint GROUPS_X = 70;
+static const uint GROUPS_Z = 70;
 
 
 
-RWStructuredBuffer<BufferStruct> OutBuff;
+RWStructuredBuffer<BufferStruct> OutBuff : register(u0);
 
 [numthreads(THREAD_GROUP_SIZE_X, THREAD_GROUP_SIZE_Y, THREAD_GROUP_SIZE_Z)]
 void main(uint3 grpID : SV_GroupID, uint3 id : SV_DispatchThreadId, uint3 grpTID : SV_GroupThreadId, uint grpIdx : SV_GroupIndex)
-{
-    
+{    
     float3 pos;
     const float scale = 6.0 / (THREAD_GROUP_SIZE_X * GROUPS_X);
     uint cubeIndex = 0;  
@@ -174,11 +171,13 @@ void main(uint3 grpID : SV_GroupID, uint3 id : SV_DispatchThreadId, uint3 grpTID
         vertlist[11] = v3 + float3(0.0, scale * 0.5, 0.0);
     }
 
+
     uint nverts = 0;
-    const uint idx = ((grpID.x + grpID.y * (GROUPS_X) + grpID.z * (GROUPS_X * GROUPS_Y)) * (THREAD_GROUP_SIZE_X * THREAD_GROUP_SIZE_Y * THREAD_GROUP_SIZE_Z) + grpTID.x + grpTID.y * (THREAD_GROUP_SIZE_X) + (THREAD_GROUP_SIZE_X * THREAD_GROUP_SIZE_Y) * grpTID.z) - OutBuff.IncrementCounter();
-    [unroll(16)]
+    uint idx = OutBuff.IncrementCounter()*15;
+    [loop]
     for (uint i = 0; triTable[(cubeIndex * 16 + i) / 4][(cubeIndex * 16 + i) % 4] != -1; i += 3)
     {
+
         OutBuff[idx + nverts].pos = vertlist[triTable[(cubeIndex * 16 + i) / 4][(cubeIndex * 16 + i) % 4]];
         OutBuff[idx + nverts + 1].pos = vertlist[triTable[(cubeIndex * 16 + i + 1) / 4][(cubeIndex * 16 + i + 1) % 4]];
         OutBuff[idx + nverts + 2].pos = vertlist[triTable[(cubeIndex * 16 + i + 2) / 4][(cubeIndex * 16 + i + 2) % 4]];
@@ -190,4 +189,5 @@ void main(uint3 grpID : SV_GroupID, uint3 id : SV_DispatchThreadId, uint3 grpTID
         nverts += 3;
     }
 
+ 
 }
