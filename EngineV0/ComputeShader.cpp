@@ -3,9 +3,9 @@
 
 ComputeShader::ComputeShader(Graphics& gfx, const LPCWSTR path)
 {
-	constexpr unsigned int GROUPS_X = 70;
-	constexpr unsigned int GROUPS_Y = 70;
-	constexpr unsigned int GROUPS_Z = 70;
+	constexpr unsigned int GROUPS_X = 50;
+	constexpr unsigned int GROUPS_Y = 50;
+	constexpr unsigned int GROUPS_Z = 50;
 
 	constexpr unsigned int THREAD_GROUP_SIZE_X = 8;
 	constexpr unsigned int THREAD_GROUP_SIZE_Y = 8;
@@ -26,6 +26,9 @@ ComputeShader::ComputeShader(Graphics& gfx, const LPCWSTR path)
 		float n1;
 		float n2;
 		float n3;
+		float r;
+		float g;
+		float b;
 	};
 
 	D3D11_BUFFER_DESC sbDesc = {};

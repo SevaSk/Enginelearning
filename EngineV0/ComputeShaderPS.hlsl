@@ -13,10 +13,10 @@ float4 main(float3 worldPos : Position, float3 n : Normal, float3 color : Color)
     const float distToL = length(vToL);
     const float3 dirToL = vToL / distToL;
 
-    const float3 att = 1.0f/(attConst + attLin * distToL + attQuad * (distToL * distToL));
+    const float3 att = 1.0f / (attConst + attLin * distToL + attQuad * (distToL * distToL));
 
     const float3 diffuse = diffuseColor * diffuseIntensity * att * max(0.0f, dot(dirToL, n));
 
-    return float4(saturate(diffuse + ambient) * materialColor, 1.0f);
+    return float4(saturate(diffuse + ambient) * color, 1.0f);
     
 }

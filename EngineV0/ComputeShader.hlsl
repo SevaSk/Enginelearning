@@ -35,15 +35,16 @@ float convfunc(float3 vect)
 struct BufferStruct {
 	float3 pos;
     float3 normal;
+    float3 color;
 };
 
 static const uint THREAD_GROUP_SIZE_X = 8;
 static const uint THREAD_GROUP_SIZE_Y = 8;
 static const uint THREAD_GROUP_SIZE_Z = 8;
 
-static const uint GROUPS_Y = 70;
-static const uint GROUPS_X = 70;
-static const uint GROUPS_Z = 70;
+static const uint GROUPS_Y = 50;
+static const uint GROUPS_X = 50;
+static const uint GROUPS_Z = 50;
 
 
 
@@ -185,7 +186,11 @@ void main(uint3 grpID : SV_GroupID, uint3 id : SV_DispatchThreadId, uint3 grpTID
         const float3 normal = normalize(cross((OutBuff[idx + nverts + 1].pos - OutBuff[idx + nverts].pos), (OutBuff[idx + nverts + 2].pos - OutBuff[idx + nverts].pos)));
         OutBuff[idx + nverts].normal = normal;
         OutBuff[idx + nverts + 1].normal = normal;
-        OutBuff[idx + nverts + 2].normal = normal;
+        OutBuff[idx + nverts + 2].normal = normal;\
+
+        OutBuff[idx + nverts].color = float3(0.7,0.9,0.3);
+        OutBuff[idx + nverts + 1].color = float3(0.7, 0.9, 0.3);
+        OutBuff[idx + nverts + 2].color = float3(0.7, 0.9, 0.3);
         nverts += 3;
     }
 
