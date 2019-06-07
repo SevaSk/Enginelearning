@@ -74,6 +74,8 @@ float3 p;
         return (p1);
     }
 
+
+
    mu = (isolevel - valp1) / (valp2 - valp1);
    p.x = p1.x + mu * (p2.x - p1.x);
    p.y = p1.y + mu * (p2.y - p1.y);
@@ -101,10 +103,9 @@ static const uint THREAD_GROUP_SIZE_X = 7;
 static const uint THREAD_GROUP_SIZE_Y = 7;
 static const uint THREAD_GROUP_SIZE_Z = 7;
 
-static const uint GROUPS_Y = 70;
-static const uint GROUPS_X = 70;
-static const uint GROUPS_Z = 70;
-
+static const uint GROUPS_Y = 200;
+static const uint GROUPS_X = 200;
+static const uint GROUPS_Z = 200;
 static const float isolevel = 1.0;
 
 RWStructuredBuffer<BufferStruct> OutBuff : register(u0);

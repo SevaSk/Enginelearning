@@ -3,15 +3,15 @@
 
 ComputeShader::ComputeShader(Graphics& gfx, const LPCWSTR path)
 {
-	constexpr unsigned int GROUPS_X = 70;
-	constexpr unsigned int GROUPS_Y = 70;
-	constexpr unsigned int GROUPS_Z = 70;
+	constexpr unsigned int GROUPS_Y = 200;
+	constexpr unsigned int GROUPS_Z = 200;
+	constexpr unsigned int GROUPS_X = 200;
 
 	constexpr unsigned int THREAD_GROUP_SIZE_X = 7;
 	constexpr unsigned int THREAD_GROUP_SIZE_Y = 7;
 	constexpr unsigned int THREAD_GROUP_SIZE_Z = 7;
 
-	constexpr unsigned int THREAD_GRID_SIZE_X = GROUPS_X * THREAD_GROUP_SIZE_X;
+	constexpr unsigned int THREAD_GRID_SIZE_X = GROUPS_X * THREAD_GROUP_SIZE_X/70;
 	constexpr unsigned int THREAD_GRID_SIZE_Y = GROUPS_Y * THREAD_GROUP_SIZE_Y;
 	constexpr unsigned int THREAD_GRID_SIZE_Z = GROUPS_Z * THREAD_GROUP_SIZE_Z;
 
