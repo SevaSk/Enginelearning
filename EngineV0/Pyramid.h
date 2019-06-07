@@ -26,7 +26,7 @@ private:
 	float dyaw;
 	float dtheta;
 	float dphi;
-	float dchi;
+	float dchi;	
 };
 
 
