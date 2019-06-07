@@ -97,13 +97,13 @@ struct Cvert
 
 
 
-static const uint THREAD_GROUP_SIZE_X = 8;
-static const uint THREAD_GROUP_SIZE_Y = 8;
-static const uint THREAD_GROUP_SIZE_Z = 8;
+static const uint THREAD_GROUP_SIZE_X = 7;
+static const uint THREAD_GROUP_SIZE_Y = 7;
+static const uint THREAD_GROUP_SIZE_Z = 7;
 
-static const uint GROUPS_Y = 50;
-static const uint GROUPS_X = 50;
-static const uint GROUPS_Z = 50;
+static const uint GROUPS_Y = 70;
+static const uint GROUPS_X = 70;
+static const uint GROUPS_Z = 70;
 
 static const float isolevel = 1.0;
 
@@ -286,9 +286,9 @@ void main(uint3 grpID : SV_GroupID, uint3 id : SV_DispatchThreadId, uint3 grpTID
         OutBuff[idx + nverts + 1].normal = normal;
         OutBuff[idx + nverts + 2].normal = normal;
 
-        OutBuff[idx + nverts].color = float3(p1.val, p1.val, p1.val);
-        OutBuff[idx + nverts + 1].color = float3(p2.val, p2.val, p2.val);
-        OutBuff[idx + nverts + 2].color = float3(p2.val, p2.val, p2.val);
+        OutBuff[idx + nverts].color = float3(p1.pos.x+1.5, p1.pos.y+1.5, p1.pos.z+1.5);
+        OutBuff[idx + nverts + 1].color = float3(p2.pos.x+1.5, p2.pos.y+1.5, p2.pos.z+1.5);
+        OutBuff[idx + nverts + 2].color = float3(p3.pos.x+1.5, p3.pos.y+1.5, p3.pos.z+1.5);
         nverts += 3;
     }
 }

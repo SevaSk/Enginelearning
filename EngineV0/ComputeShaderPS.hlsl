@@ -5,8 +5,8 @@ static const float diffuseIntensity = 1.0f;
 static const float attConst = 1.0f;
 static const float attLin = 0.35f;
 static const float attQuad = 0.44f;
-static const float specularIntensity = 2.0f;
-static const float specularPower = 1.0f;
+static const float specularIntensity = 3.0f;
+static const float specularPower = 14.5f;
 
 float4 main(float3 worldPos : Position, float3 n : Normal, float3 color : Color) : SV_Target
 {
