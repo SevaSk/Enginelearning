@@ -103,9 +103,9 @@ static const uint THREAD_GROUP_SIZE_X = 7;
 static const uint THREAD_GROUP_SIZE_Y = 7;
 static const uint THREAD_GROUP_SIZE_Z = 7;
 
-static const uint GROUPS_Y = 200;
-static const uint GROUPS_X = 200;
-static const uint GROUPS_Z = 200;
+static const uint GROUPS_Y = 250;
+static const uint GROUPS_X = 250;
+static const uint GROUPS_Z = 250;
 static const float isolevel = 1.0;
 
 RWStructuredBuffer<BufferStruct> OutBuff : register(u0);
