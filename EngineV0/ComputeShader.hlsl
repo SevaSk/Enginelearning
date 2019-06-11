@@ -52,7 +52,7 @@ float MandelbarSet(float3 vect)
     return 0.0f;
 }
 
-float mandelbulbSet(float3 vect)
+float mandelbulbSet8(float3 vect)
 {
     const float3 c = vect;
     const uint loops = 200;
@@ -85,7 +85,30 @@ float gyroid(float3 vect)
     return 2.0;
 }
 
-#define convFunc(a) MandelbarSet(a)
+float mandelbulbSet3(float3 vect)
+{
+    const float3 c = vect;
+    const uint loops = 200;
+    [loop]
+    for (uint i = 0; i < loops; i++)
+    {
+        [branch]
+        if (length(vect) > 200)
+        {
+            return 2.0f - (float(i) / (float) loops);
+        }
+        const float r = sqrt(pow(vect.x, 2) + pow(vect.y, 2) + pow(vect.z, 2));
+        const int n = 3;
+        const float phi = atan(vect.y / vect.x);
+        const float theta = acos(vect.z / r);
+        float3 vect2 = pow(r, n) * float3(sin(n * theta) * cos(n * phi), sin(n * theta) * sin(n * phi), cos(n * theta));
+        vect = vect2 + c;
+    }
+    return 0.0f;
+}
+
+
+#define convFunc(a) mandelbulbSet8(a)
 
 float3 vertexInterp(float isolevel, float3 p1, float3 p2, float valp1, float valp2)
 {
@@ -194,9 +217,9 @@ static const uint THREAD_GROUP_SIZE_X = 7;
 static const uint THREAD_GROUP_SIZE_Y = 7;
 static const uint THREAD_GROUP_SIZE_Z = 7;
 
-static const uint GROUPS_Y = 50;
-static const uint GROUPS_X = 50;
-static const uint GROUPS_Z = 50;
+static const uint GROUPS_Y = 25;
+static const uint GROUPS_X = 25;
+static const uint GROUPS_Z = 25;
 static const float isolevel = 1.0;
 
 RWStructuredBuffer<BufferStruct> OutBuff : register(u0);
@@ -359,13 +382,11 @@ void main(uint3 grpID : SV_GroupID, uint3 id : SV_DispatchThreadId, uint3 grpTID
         vertlist[0].val = 2.0 - (v0.val + v1.val);
     }
 
-
     uint nverts = 0;
     const uint idx = OutBuff.IncrementCounter()*15;
     [loop]
     for (uint i = 0; triTable[(cubeIndex * 16 + i) / 4][(cubeIndex * 16 + i) % 4] != -1; i += 3)
     {
-
         Cvert p1 = vertlist[triTable[(cubeIndex * 16 + i) / 4][(cubeIndex * 16 + i) % 4]];
         Cvert p2 = vertlist[triTable[(cubeIndex * 16 + i + 2) / 4][(cubeIndex * 16 + i + 2) % 4]];
         Cvert p3 = vertlist[triTable[(cubeIndex * 16 + i + 1) / 4][(cubeIndex * 16 + i + 1) % 4]];

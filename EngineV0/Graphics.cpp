@@ -158,6 +158,11 @@ void Graphics::DrawNonIndexed(UINT count) noexcept(!IS_DEBUG)
 	GFX_THROW_INFO_ONLY(pContext->Draw(count,0u));
 }
 
+void Graphics::DrawAuto() noexcept(!IS_DEBUG)
+{
+	GFX_THROW_INFO_ONLY(pContext->DrawAuto());
+}
+
 
 void Graphics::SetProjection(DirectX::FXMMATRIX proj) noexcept
 {

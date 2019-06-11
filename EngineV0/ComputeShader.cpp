@@ -3,9 +3,9 @@
 
 ComputeShader::ComputeShader(Graphics& gfx, const LPCWSTR path)
 {
-	constexpr unsigned int GROUPS_Y = 50;
-	constexpr unsigned int GROUPS_Z = 50;
-	constexpr unsigned int GROUPS_X = 50;
+	constexpr unsigned int GROUPS_Y = 25;
+	constexpr unsigned int GROUPS_Z = 25;
+	constexpr unsigned int GROUPS_X = 25;
 
 	constexpr unsigned int THREAD_GROUP_SIZE_X = 7;
 	constexpr unsigned int THREAD_GROUP_SIZE_Y = 7;

@@ -15,7 +15,7 @@ void Drawable::Draw(Graphics& gfx) const noexcept(!IS_DEBUG)
 	{
 		b->Bind(gfx);
 	}
-
+	
 	gfx.DrawNonIndexed(3000000u);
 }
 
