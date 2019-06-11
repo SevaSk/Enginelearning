@@ -2,6 +2,7 @@
 #include "GraphicsThrowMacros.h"
 #include "IndexBuffer.h"
 #include "VertexBuffer.h"
+#include "ComputeShader.h"
 #include <cassert>
 #include <typeinfo>
 
@@ -15,8 +16,8 @@ void Drawable::Draw(Graphics& gfx) const noexcept(!IS_DEBUG)
 	{
 		b->Bind(gfx);
 	}
-	
-	gfx.DrawNonIndexed(3000000u);
+
+	gfx.DrawInstancedIndirect(pComputeShader->GetArgsBuffer());
 }
 
 void Drawable::AddBind(std::unique_ptr<Bindable> bind) noexcept(!IS_DEBUG)
@@ -37,4 +38,10 @@ void Drawable::AddVertexBuffer(std::unique_ptr<VertexBuffer> vbuf) noexcept(!IS_
 {
 	pVertexBuffer = vbuf.get();
 	binds.push_back(std::move(vbuf));
+}
+
+void Drawable::AddComputeShader(std::unique_ptr<class ComputeShader> cShader) noexcept(!IS_DEBUG)
+{
+	pComputeShader = cShader.get();
+	binds.push_back(std::move(cShader));
 }

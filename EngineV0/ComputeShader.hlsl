@@ -224,9 +224,17 @@ static const float isolevel = 1.0;
 
 RWStructuredBuffer<BufferStruct> OutBuff : register(u0);
 
+RWByteAddressBuffer args : register(u1);
+
 [numthreads(THREAD_GROUP_SIZE_X, THREAD_GROUP_SIZE_Y, THREAD_GROUP_SIZE_Z)]
 void main(uint3 grpID : SV_GroupID, uint3 id : SV_DispatchThreadId, uint3 grpTID : SV_GroupThreadId, uint grpIdx : SV_GroupIndex)
 {   
+
+
+    args.Store(0, 1000000);
+    args.Store(4, 1);
+    args.Store(8, 0);
+    args.Store(12, 0);
 
     float3 pos;
     const float size = 6.0;

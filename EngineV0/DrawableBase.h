@@ -2,6 +2,7 @@
 #include "Drawable.h"
 #include "IndexBuffer.h"
 #include "VertexBuffer.h"
+#include "ComputeShader.h"
 
 template<class T>
 class DrawableBase : public Drawable
@@ -23,11 +24,17 @@ protected:
 		staticBinds.push_back(std::move(ibuf));
 	}
 
-	//temp fix
 	void AddStaticVertexBuffer(std::unique_ptr<VertexBuffer> vbuf) noexcept(!IS_DEBUG)
 	{
 		pVertexBuffer = vbuf.get();
 		staticBinds.push_back(std::move(vbuf));
+	}
+
+	void AddStaticComputeShader(std::unique_ptr<ComputeShader> cShader) noexcept(!IS_DEBUG)
+	{
+		assert("Attempting to add computeshader a second time" && pIndexBuffer == nullptr);
+		pComputeShader = cShader.get();
+		staticBinds.push_back(std::move(cShader));
 	}
 
 
@@ -44,7 +51,7 @@ protected:
 		}
 		assert("Failed to find index buffer in static binds" && pIndexBuffer != nullptr);
 	}
-	//temp fix
+
 	void SetVertexFromStatic() noexcept(!IS_DEBUG)
 	{
 		for (const auto& b : staticBinds)
@@ -57,6 +64,20 @@ protected:
 		}
 		assert("Failed to find index buffer in static binds" && pIndexBuffer != nullptr);
 	}
+
+	void SetComputeFromStatic() noexcept(!IS_DEBUG)
+	{
+		for (const auto& b : staticBinds)
+		{
+			if (const auto p = dynamic_cast<ComputeShader*>(b.get()))
+			{
+				pComputeShader = p;
+				return;
+			}
+		}
+		assert("Failed to find index buffer in static binds" && pIndexBuffer != nullptr);
+	}
+
 
 
 private:

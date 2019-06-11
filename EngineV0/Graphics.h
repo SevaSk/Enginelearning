@@ -60,7 +60,7 @@ public:
 	void EndFrame();
 	void DrawIndexed(UINT count) noexcept(!IS_DEBUG);
 	void DrawNonIndexed(UINT count) noexcept(!IS_DEBUG);
-	void DrawAuto() noexcept(!IS_DEBUG);
+	void DrawInstancedIndirect(Microsoft::WRL::ComPtr<ID3D11Buffer> pArgsBuffer) noexcept(!IS_DEBUG);
 	void SetProjection(DirectX::FXMMATRIX proj) noexcept;
 	DirectX::XMMATRIX GetProjection() const noexcept;
 	void SetCamera(DirectX::FXMMATRIX cam) noexcept;

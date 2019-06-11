@@ -30,7 +30,7 @@ ComputeShaderFractal::ComputeShaderFractal(Graphics& gfx, float x, float y, floa
 
 		AddStaticBind(std::make_unique<Topology>(gfx, D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
 
-		AddStaticBind(std::make_unique<ComputeShader>(gfx, L"Path"));
+		AddStaticComputeShader(std::make_unique<ComputeShader>(gfx, L"Path"));
 
 	}
 	else

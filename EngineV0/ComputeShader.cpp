@@ -17,6 +17,16 @@ ComputeShader::ComputeShader(Graphics& gfx, const LPCWSTR path)
 
 	INFOMAN(gfx);
 
+	//create args buffer
+	D3D11_BUFFER_DESC argsDesc = {};
+	argsDesc.BindFlags = D3D11_BIND_UNORDERED_ACCESS | D3D11_BIND_SHADER_RESOURCE;
+	argsDesc.CPUAccessFlags = 0;
+	argsDesc.MiscFlags = D3D11_RESOURCE_MISC_DRAWINDIRECT_ARGS | D3D11_RESOURCE_MISC_BUFFER_ALLOW_RAW_VIEWS;
+	argsDesc.StructureByteStride = 32u;
+	argsDesc.ByteWidth = 32 * 4;
+	argsDesc.Usage = D3D11_USAGE_DEFAULT;
+	GFX_THROW_INFO(GetDevice(gfx)->CreateBuffer(&argsDesc, nullptr, &pArgsBuffer));
+
 	//creating structered buffer
 	struct BufferStruct
 	{
@@ -40,6 +50,16 @@ ComputeShader::ComputeShader(Graphics& gfx, const LPCWSTR path)
 	sbDesc.Usage = D3D11_USAGE_DEFAULT;
 	
 	GFX_THROW_INFO(GetDevice(gfx)->CreateBuffer(&sbDesc, nullptr, &pStructuredBuffer));
+
+	//create UAV for agrs buffer
+	D3D11_UNORDERED_ACCESS_VIEW_DESC argsUAVDesc;
+	argsUAVDesc.Buffer.FirstElement = 0;
+	argsUAVDesc.Buffer.Flags = D3D11_BUFFER_UAV_FLAG_RAW;
+	argsUAVDesc.Buffer.NumElements = 4;
+	argsUAVDesc.Format = DXGI_FORMAT_R32_TYPELESS;
+	argsUAVDesc.ViewDimension = D3D11_UAV_DIMENSION_BUFFER;
+
+	GFX_THROW_INFO(GetDevice(gfx)->CreateUnorderedAccessView(pArgsBuffer.Get(), &argsUAVDesc, &pArgsBufferUAV));
 
 	//creating UAV
 	D3D11_UNORDERED_ACCESS_VIEW_DESC sbUAVDesc;
@@ -416,10 +436,12 @@ ComputeShader::ComputeShader(Graphics& gfx, const LPCWSTR path)
 	//dispatch threads
 	UINT initCounts = 0;
 	GetContext(gfx)->CSSetUnorderedAccessViews(0, 1, pStructuredBufferUAV.GetAddressOf(), &initCounts);
+	GetContext(gfx)->CSSetUnorderedAccessViews(1, 1, pArgsBufferUAV.GetAddressOf(), &initCounts);
 	GetContext(gfx)->CSSetShader(pComputeShader.Get(), NULL, 0);
 	GetContext(gfx)->Dispatch(GROUPS_X, GROUPS_Y, GROUPS_Z);
 	Microsoft::WRL::ComPtr<ID3D11UnorderedAccessView> pNullUAV = NULL;
 	GetContext(gfx)->CSSetUnorderedAccessViews(0, 1, &pNullUAV, &initCounts);
+	//GetContext(gfx)->CSSetUnorderedAccessViews(1, 1, &pNullUAV, &initCounts);
 	GetContext(gfx)->VSSetShaderResources(0, 1, pStructuredBufferSRV.GetAddressOf());
 }
 
@@ -428,3 +450,9 @@ void ComputeShader::Bind(Graphics& gfx) noexcept
 	//bind to vertex shader
 }
 
+
+
+Microsoft::WRL::ComPtr<ID3D11Buffer> ComputeShader::GetArgsBuffer() const noexcept
+{
+	return pArgsBuffer;
+}
