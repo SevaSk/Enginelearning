@@ -15,7 +15,7 @@ private:
 	int mousex = 0;
 	int mousey = 0;
 	float dp = 0.3f;
-	float dm = 0.03f;
+	float dm = 0.01f;
 	DirectX::XMMATRIX cam_rot;
 	DirectX::XMVECTOR cam_pos;
 };

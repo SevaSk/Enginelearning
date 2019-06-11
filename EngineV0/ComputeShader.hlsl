@@ -8,7 +8,7 @@ cbuffer CBuff2 : register(b1)
     int4 edgeTable[64];
 }
 
-float convfunc(float3 vect)
+float cubicSet(float3 vect)
 {
     const float3 c = vect;
     const uint loops = 500;
@@ -51,6 +51,31 @@ float MandelbarSet(float3 vect)
     }
     return 0.0f;
 }
+
+float mandelbulbSet(float3 vect)
+{
+    const float3 c = vect;
+    const uint loops = 200;
+    [loop]
+    for (uint i = 0; i < loops; i++)
+    {
+        [branch]
+        if (length(vect) > 200)
+        {
+            return 2.0f - (float(i) / (float) loops);   
+        }
+        const float r = sqrt(pow(vect.x, 2) + pow(vect.y, 2) + pow(vect.z, 2));
+        const int n = 8;
+        const float phi = atan(vect.y / vect.x);
+        const float theta = acos(vect.z / r);
+        float3 vect2 = pow(r, n) * float3(sin(n * theta) * cos(n * phi), sin(n * theta) * sin(n * phi), cos(n * theta));
+        vect = vect2 + c;
+    }
+    return 0.0f;
+}
+
+
+#define convFunc(a) mandelbulbSet(a)
 
 
 
@@ -103,9 +128,9 @@ static const uint THREAD_GROUP_SIZE_X = 7;
 static const uint THREAD_GROUP_SIZE_Y = 7;
 static const uint THREAD_GROUP_SIZE_Z = 7;
 
-static const uint GROUPS_Y = 250;
-static const uint GROUPS_X = 250;
-static const uint GROUPS_Z = 250;
+static const uint GROUPS_Y = 70;
+static const uint GROUPS_X = 70;
+static const uint GROUPS_Z = 70;
 static const float isolevel = 1.0;
 
 RWStructuredBuffer<BufferStruct> OutBuff : register(u0);
@@ -126,7 +151,7 @@ void main(uint3 grpID : SV_GroupID, uint3 id : SV_DispatchThreadId, uint3 grpTID
 
     Cvert v0;
     v0.pos = pos + float3(0.0, 0.0, scale);
-    v0.val = MandelbarSet(v0.pos);
+    v0.val = convFunc(v0.pos);
     [branch] 
     if (v0.val < isolevel)
     {
@@ -134,7 +159,7 @@ void main(uint3 grpID : SV_GroupID, uint3 id : SV_DispatchThreadId, uint3 grpTID
     }
     Cvert v1;
     v1.pos = pos + float3(scale, 0.0, scale);
-    v1.val = MandelbarSet(v1.pos);
+    v1.val = convFunc(v1.pos);
     [branch]
     if (v1.val < isolevel)
     {
@@ -142,7 +167,7 @@ void main(uint3 grpID : SV_GroupID, uint3 id : SV_DispatchThreadId, uint3 grpTID
     }
     Cvert v2;
     v2.pos = pos + float3(scale, 0.0, 0.0);
-    v2.val = MandelbarSet(v2.pos);
+    v2.val = convFunc(v2.pos);
     [branch]
     if (v2.val < isolevel)
     {
@@ -150,7 +175,7 @@ void main(uint3 grpID : SV_GroupID, uint3 id : SV_DispatchThreadId, uint3 grpTID
     }
     Cvert v3;
     v3.pos = pos;
-    v3.val = MandelbarSet(v3.pos);
+    v3.val = convFunc(v3.pos);
    [branch]
     if (v3.val < isolevel)
     {
@@ -158,7 +183,7 @@ void main(uint3 grpID : SV_GroupID, uint3 id : SV_DispatchThreadId, uint3 grpTID
     }
     Cvert v4;
     v4.pos = pos + float3(0.0, scale, scale);
-    v4.val = MandelbarSet(v4.pos);
+    v4.val = convFunc(v4.pos);
    [branch]
     if (v4.val < isolevel)
     {
@@ -166,7 +191,7 @@ void main(uint3 grpID : SV_GroupID, uint3 id : SV_DispatchThreadId, uint3 grpTID
     }
     Cvert v5;
     v5.pos = pos + float3(scale, scale, scale);
-    v5.val = MandelbarSet(v5.pos);
+    v5.val = convFunc(v5.pos);
     [branch]
     if (v5.val < isolevel)
     {
@@ -174,7 +199,7 @@ void main(uint3 grpID : SV_GroupID, uint3 id : SV_DispatchThreadId, uint3 grpTID
     }
     Cvert v6;
     v6.pos = pos + float3(scale, scale, 0.0);
-    v6.val = MandelbarSet(v6.pos);
+    v6.val = convFunc(v6.pos);
    [branch]
     if (v6.val < isolevel)
     {
@@ -182,7 +207,7 @@ void main(uint3 grpID : SV_GroupID, uint3 id : SV_DispatchThreadId, uint3 grpTID
     }
     Cvert v7;
     v7.pos = pos + float3(0.0, scale, 0.0);
-    v7.val = MandelbarSet(v7.pos);
+    v7.val = convFunc(v7.pos);
     [branch]
     if (v7.val < isolevel)
     {
