@@ -217,9 +217,9 @@ static const uint THREAD_GROUP_SIZE_X = 7;
 static const uint THREAD_GROUP_SIZE_Y = 7;
 static const uint THREAD_GROUP_SIZE_Z = 7;
 
-static const uint GROUPS_Y = 25;
-static const uint GROUPS_X = 25;
-static const uint GROUPS_Z = 25;
+static const uint GROUPS_Y = 53;
+static const uint GROUPS_X = 53;
+static const uint GROUPS_Z = 53;
 static const float isolevel = 1.0;
 
 RWStructuredBuffer<BufferStruct> OutBuff : register(u0);
@@ -230,11 +230,14 @@ RWByteAddressBuffer args : register(u1);
 void main(uint3 grpID : SV_GroupID, uint3 id : SV_DispatchThreadId, uint3 grpTID : SV_GroupThreadId, uint grpIdx : SV_GroupIndex)
 {   
 
+    if (id.x == THREAD_GROUP_SIZE_X * GROUPS_X -1 && id.y == THREAD_GROUP_SIZE_Y * GROUPS_Y -1 && id.z == GROUPS_Z * THREAD_GROUP_SIZE_Z - 1)
+    {
+        args.Store(0, OutBuff.IncrementCounter() * 15);
+        args.Store(4, 1);
+        args.Store(8, 0);
+        args.Store(12, 0);
+    }
 
-    args.Store(0, 1000000);
-    args.Store(4, 1);
-    args.Store(8, 0);
-    args.Store(12, 0);
 
     float3 pos;
     const float size = 6.0;
@@ -413,4 +416,6 @@ void main(uint3 grpID : SV_GroupID, uint3 id : SV_DispatchThreadId, uint3 grpTID
         OutBuff[idx + nverts + 2].color = float3(p3.pos.x+1.5, p3.pos.y+1.5, p3.pos.z+1.5);
         nverts += 3;
     }
+
+
 }
