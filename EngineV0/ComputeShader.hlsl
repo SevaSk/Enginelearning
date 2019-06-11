@@ -75,9 +75,17 @@ float mandelbulbSet(float3 vect)
 }
 
 
-#define convFunc(a) mandelbulbSet(a)
+float gyroid(float3 vect)
+{
+    [branch]
+    if (abs(cos(vect.x) * sin(vect.y) + cos(vect.y) * sin(vect.z) + cos(vect.z) * sin(vect.x))  < 0.1)
+    {
+        return 0.0;
+    }
+    return 2.0;
+}
 
-
+#define convFunc(a) MandelbarSet(a)
 
 float3 vertexInterp(float isolevel, float3 p1, float3 p2, float valp1, float valp2)
 {
@@ -110,6 +118,64 @@ float3 p;
 
 }
 
+
+bool lessThanVect(float3 left, float3 right)
+{
+    [branch]
+    if (left.x < right.x)
+    {
+        return true;
+    }
+    else if (left.x > right.x)
+    {
+        return false;
+    }
+    [branch]
+    if (left.y < right.y)
+    {
+        return true;
+    }
+    else if (left.y > right.y)
+    {
+        return false;
+    }
+    [branch]
+    if (left.z < right.z)
+    {
+        return true;
+    }
+    else if (left.z > right.z)
+    {
+        return false;
+    }
+    return false;
+}
+
+
+
+float3 vertexInterp2(float isolevel, float3 p1, float3 p2, float valp1, float valp2)
+{
+    [branch]
+    if (lessThanVect(p1,p2))
+    {
+        float3 temp;
+        temp = p1;
+        p1 = p2;
+        p2 = temp;
+    }
+    float3 p;
+    [branch]
+    if (abs(valp1 - valp2) > 0.00001)
+    {
+        p = p1 + (p2 - p1) / (valp2 - valp1) * (isolevel - valp1);
+    }
+    else
+    {
+        p = p1;
+    }
+    return p;
+}
+
 struct BufferStruct {
 	float3 pos;
     float3 normal;
@@ -128,9 +194,9 @@ static const uint THREAD_GROUP_SIZE_X = 7;
 static const uint THREAD_GROUP_SIZE_Y = 7;
 static const uint THREAD_GROUP_SIZE_Z = 7;
 
-static const uint GROUPS_Y = 70;
-static const uint GROUPS_X = 70;
-static const uint GROUPS_Z = 70;
+static const uint GROUPS_Y = 50;
+static const uint GROUPS_X = 50;
+static const uint GROUPS_Z = 50;
 static const float isolevel = 1.0;
 
 RWStructuredBuffer<BufferStruct> OutBuff : register(u0);
@@ -140,14 +206,15 @@ void main(uint3 grpID : SV_GroupID, uint3 id : SV_DispatchThreadId, uint3 grpTID
 {   
 
     float3 pos;
-    const float scale = 6.0 / (THREAD_GROUP_SIZE_X * GROUPS_X);
+    const float size = 6.0;
+    const float scale = size / (THREAD_GROUP_SIZE_X * GROUPS_X);
     uint cubeIndex = 0;  
     const float3 initvert = float3(0.0, 0.0, 0.0);
     Cvert vertlist[12];
 
-    pos.x = (grpID.x * (THREAD_GROUP_SIZE_X) + grpTID.x) * scale  -3.0;
-    pos.y = (grpID.y * (THREAD_GROUP_SIZE_Y) + grpTID.y) * scale  -3.0;
-    pos.z = (grpID.z * (THREAD_GROUP_SIZE_Z) + grpTID.z) * scale  -3.0;
+    pos.x = (grpID.x * (THREAD_GROUP_SIZE_X) + grpTID.x) * scale - size/2;
+    pos.y = (grpID.y * (THREAD_GROUP_SIZE_Y) + grpTID.y) * scale - size/2;
+    pos.z = (grpID.z * (THREAD_GROUP_SIZE_Z) + grpTID.z) * scale - size/2;
 
     Cvert v0;
     v0.pos = pos + float3(0.0, 0.0, scale);
