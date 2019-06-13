@@ -4,10 +4,7 @@
 #include "MarchingCubesIso.h"
 
 
-ComputeShaderFractal::ComputeShaderFractal(Graphics& gfx, float x, float y, float z) :
-	x(x),
-	y(y),
-	z(z)
+ComputeShaderFractal::ComputeShaderFractal(Graphics& gfx)
 {
 	namespace dx = DirectX;
 
@@ -39,21 +36,31 @@ ComputeShaderFractal::ComputeShaderFractal(Graphics& gfx, float x, float y, floa
 	}
 
 
+	dx::XMStoreFloat3x3(&mt,
+		dx::XMMatrixScaling(3.0f, 3.0f, 3.0f)
+	);
+
 	AddBind(std::make_unique<TransformCbuf>(gfx, *this));
 
 }
 
 void ComputeShaderFractal::Update(float dt) noexcept
 {
-
+	roll += droll * dt;
+	pitch += dpitch * dt;
+	yaw += dyaw * dt;
+	theta += dtheta * dt;
+	phi += dphi * dt;
+	chi += dchi * dt;
 }
 
 
 DirectX::XMMATRIX ComputeShaderFractal::GetTransformXM() const noexcept
 {
-	return
-		DirectX::XMMatrixScaling(3.0f,3.0f,3.0f)*
-		DirectX::XMMatrixRotationRollPitchYaw(0.0f, 0.0f, 0.0f)*
-		DirectX::XMMatrixTranslation(x, y, z)*
-		DirectX::XMMatrixRotationRollPitchYaw(0.0f, 0.0f, 0.0f);
+	namespace dx = DirectX;
+	return 
+		DirectX::XMLoadFloat3x3(&mt)*
+		dx::XMMatrixRotationRollPitchYaw(pitch, yaw, roll) *
+		dx::XMMatrixTranslation(r, 0.0f, 0.0f) *
+		dx::XMMatrixRotationRollPitchYaw(theta, phi, chi);
 }

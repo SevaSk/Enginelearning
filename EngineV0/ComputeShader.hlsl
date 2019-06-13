@@ -107,7 +107,17 @@ float mandelbulbSet3(float3 vect)
     return 0.0f;
 }
 
+float primitive(float3 vect)
+{
+    [branch]
+    if (abs(cos(vect.x) + cos(vect.y) + cos(vect.z)) < 0.1)
+    {
+        return 0.0;
+    }
+    return 2.0;
+}
 
+// mandelbulbSet3 mandelbulbSet8 MandelbarSet cubicSet gyroid primitive
 #define convFunc(a) mandelbulbSet8(a)
 
 float3 vertexInterp(float isolevel, float3 p1, float3 p2, float valp1, float valp2)
@@ -217,9 +227,9 @@ static const uint THREAD_GROUP_SIZE_X = 7;
 static const uint THREAD_GROUP_SIZE_Y = 7;
 static const uint THREAD_GROUP_SIZE_Z = 7;
 
-static const uint GROUPS_Y = 53;
-static const uint GROUPS_X = 53;
-static const uint GROUPS_Z = 53;
+static const uint GROUPS_Y = 52;
+static const uint GROUPS_X = 52;
+static const uint GROUPS_Z = 52;
 static const float isolevel = 1.0;
 
 RWStructuredBuffer<BufferStruct> OutBuff : register(u0);
@@ -232,7 +242,7 @@ void main(uint3 grpID : SV_GroupID, uint3 id : SV_DispatchThreadId, uint3 grpTID
 
     if (id.x == THREAD_GROUP_SIZE_X * GROUPS_X -1 && id.y == THREAD_GROUP_SIZE_Y * GROUPS_Y -1 && id.z == GROUPS_Z * THREAD_GROUP_SIZE_Z - 1)
     {
-        args.Store(0, OutBuff.IncrementCounter() * 15);
+        args.Store(0, OutBuff.IncrementCounter()*15);
         args.Store(4, 1);
         args.Store(8, 0);
         args.Store(12, 0);
@@ -401,7 +411,6 @@ void main(uint3 grpID : SV_GroupID, uint3 id : SV_DispatchThreadId, uint3 grpTID
         Cvert p1 = vertlist[triTable[(cubeIndex * 16 + i) / 4][(cubeIndex * 16 + i) % 4]];
         Cvert p2 = vertlist[triTable[(cubeIndex * 16 + i + 2) / 4][(cubeIndex * 16 + i + 2) % 4]];
         Cvert p3 = vertlist[triTable[(cubeIndex * 16 + i + 1) / 4][(cubeIndex * 16 + i + 1) % 4]];
- 
         OutBuff[idx + nverts].pos = p1.pos;
         OutBuff[idx + nverts + 1].pos = p2.pos;
         OutBuff[idx + nverts + 2].pos = p3.pos;

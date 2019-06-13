@@ -16,8 +16,19 @@ void Drawable::Draw(Graphics& gfx) const noexcept(!IS_DEBUG)
 	{
 		b->Bind(gfx);
 	}
+	if (pIndexBuffer != nullptr)
+	{
+		gfx.DrawIndexed(pIndexBuffer->GetCount());
+	}
+	else if (pVertexBuffer != nullptr)
+	{
+		gfx.DrawNonIndexed(pVertexBuffer->GetCount());
+	}
+	else if (pComputeShader != nullptr)
+	{
+		gfx.DrawInstancedIndirect(pComputeShader->GetArgsBuffer());
+	}
 
-	gfx.DrawInstancedIndirect(pComputeShader->GetArgsBuffer());
 }
 
 void Drawable::AddBind(std::unique_ptr<Bindable> bind) noexcept(!IS_DEBUG)

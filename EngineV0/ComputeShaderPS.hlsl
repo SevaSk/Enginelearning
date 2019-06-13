@@ -1,12 +1,12 @@
-static const float3 lightPos = { 1.5f, 10.5f, 1.5f };
+static const float3 lightPos = { 1.5f, 5.5f, 1.5f };
 static const float3 ambient = { 0.15f, 0.15f, 0.15f };
 static const float3 diffuseColor = { 1.0f, 1.0f, 1.0f };
-static const float diffuseIntensity = 3.0f;
+static const float diffuseIntensity = 1.5f;
 static const float attConst = 1.0f;
 static const float attLin = 0.35f;
 static const float attQuad = 0.44f;
-static const float specularIntensity = 1.0f;
-static const float specularPower = 1.5f;
+static const float specularIntensity = 6.0f;
+static const float specularPower = 30.0f;
 
 float4 main(float3 worldPos : Position, float3 n : Normal, float3 color : Color) : SV_Target
 {

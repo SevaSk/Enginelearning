@@ -280,8 +280,7 @@ void Graphics::DrawTestTriangle(const std::vector<float>& campos)
 			dx::XMMatrixRotationX(0.0f)*
 			dx::XMMatrixRotationY(0.0f)*
 			dx::XMMatrixRotationZ(0.0f)*
-			dx::XMMatrixTranslation(campos[0],campos[1],4.0f)*
-			dx::XMMatrixPerspectiveLH(1.0f,3.0f/4.0f,0.5f,10.0f)
+			dx::XMMatrixTranslation(campos[0],campos[1],4.0f)
 			)
 		}
 	};

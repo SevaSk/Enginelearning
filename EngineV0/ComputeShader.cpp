@@ -3,9 +3,9 @@
 
 ComputeShader::ComputeShader(Graphics& gfx, const LPCWSTR path)
 {
-	constexpr unsigned int GROUPS_Y = 53;
-	constexpr unsigned int GROUPS_Z = 53;
-	constexpr unsigned int GROUPS_X = 53;
+	constexpr unsigned int GROUPS_Y = 52;
+	constexpr unsigned int GROUPS_Z = 52;
+	constexpr unsigned int GROUPS_X = 52;
 
 	constexpr unsigned int THREAD_GROUP_SIZE_X = 7;
 	constexpr unsigned int THREAD_GROUP_SIZE_Y = 7;
@@ -441,7 +441,7 @@ ComputeShader::ComputeShader(Graphics& gfx, const LPCWSTR path)
 	GetContext(gfx)->Dispatch(GROUPS_X, GROUPS_Y, GROUPS_Z);
 	Microsoft::WRL::ComPtr<ID3D11UnorderedAccessView> pNullUAV = NULL;
 	GetContext(gfx)->CSSetUnorderedAccessViews(0, 1, &pNullUAV, &initCounts);
-	//GetContext(gfx)->CSSetUnorderedAccessViews(1, 1, &pNullUAV, &initCounts);
+	GetContext(gfx)->CSSetUnorderedAccessViews(1, 1, &pNullUAV, &initCounts);
 	GetContext(gfx)->VSSetShaderResources(0, 1, pStructuredBufferSRV.GetAddressOf());
 }
 
