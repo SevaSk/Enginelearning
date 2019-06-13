@@ -2,9 +2,11 @@
 
 namespace dx = DirectX;
 
-Camera::Camera():
+Camera::Camera(Mouse& mouse):
 	cam_rot(DirectX::XMMatrixRotationRollPitchYaw(0.0f,0.0f,0.0f)),
-	cam_pos({ 0.0f, 0.0f, 20.0f,0.0f })
+	cam_pos({ 0.0f, 0.0f, 20.0f,0.0f }),
+	mousex(mouse.GetPosX()),
+	mousey(mouse.GetPosY())
 {}
 
 dx::XMMATRIX Camera::GetMatrix() const noexcept

@@ -27,10 +27,10 @@ Graphics::Graphics(HWND hWnd)
 	sd.SampleDesc.Count = 1;
 	sd.SampleDesc.Quality = 0;
 	sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-	sd.BufferCount = 1;
+	sd.BufferCount = 2;
 	sd.OutputWindow = hWnd;
 	sd.Windowed = TRUE;
-	sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
+	sd.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
 	sd.Flags = 0;
 
 	UINT swapCreateFlags = 0u;
@@ -134,8 +134,9 @@ void Graphics::EndFrame()
 #ifndef NDEBUG
 	infoManager.Set();
 #endif 
-
-	if (FAILED(hr = pSwap->Present(1u, 0u)))
+	hr = pSwap->Present(1u, 0u);
+	pContext->OMSetRenderTargets(1u, pTarget.GetAddressOf(), pDSV.Get());
+	if (FAILED(hr))
 	{
 		if (hr == DXGI_ERROR_DEVICE_REMOVED)
 		{
@@ -160,7 +161,7 @@ void Graphics::DrawNonIndexed(UINT count) noexcept(!IS_DEBUG)
 
 void Graphics::DrawInstancedIndirect(Microsoft::WRL::ComPtr<ID3D11Buffer> pArgsBuffer) noexcept(!IS_DEBUG)
 {
-	GFX_THROW_INFO_ONLY(pContext->DrawInstancedIndirect(pArgsBuffer.Get(),0));
+	pContext->DrawInstancedIndirect(pArgsBuffer.Get(),0);
 }
 
 
@@ -372,7 +373,7 @@ void Graphics::DrawTestTriangle(const std::vector<float>& campos)
 
 	GFX_THROW_INFO(pDevice->CreateInputLayout(
 		ied,
-		std::size(ied),
+		(UINT)std::size(ied),
 		pBlob->GetBufferPointer(),
 		(UINT)pBlob->GetBufferSize(),
 		&pInputLayout

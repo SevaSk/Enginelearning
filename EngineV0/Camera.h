@@ -5,15 +5,15 @@
 class Camera
 {
 public:
-	Camera();
+	Camera(Mouse& mouse);
 	DirectX::XMMATRIX GetMatrix() const noexcept;
 	void Update(float dt, Keyboard& kdb, Mouse& mouse) noexcept;
 	void Reset() noexcept;
 	
 
 private:
-	int mousex = 0;
-	int mousey = 0;
+	int mousex;
+	int mousey;
 	float dp = 0.3f;
 	float dm = 0.01f;
 	DirectX::XMMATRIX cam_rot;

@@ -1,4 +1,4 @@
-static const float3 lightPos = { 1.5f, 5.5f, 1.5f };
+static const float3 lightPos = { 1.5f, 8.5f, 1.5f };
 static const float3 ambient = { 0.15f, 0.15f, 0.15f };
 static const float3 diffuseColor = { 1.0f, 1.0f, 1.0f };
 static const float diffuseIntensity = 1.5f;
