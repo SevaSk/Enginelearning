@@ -1,3 +1,18 @@
+float templateFunc(float3 vect)
+{
+    [branch]
+    if (abs(pow(vect.x, 2) + pow(vect.y, 2) - pow(vect.z, 2) +0.1 ) < 0.1)
+    {
+        return 1.1;
+    }
+    else
+    {
+        return 0.9;
+    }
+}
+
+#define convFunc(a) templateFunc(a)
+
 cbuffer CBuff : register(b0)
 {
     int4 triTable[1024];
@@ -74,20 +89,6 @@ float mandelbulbSet8(float3 vect)
     return 0.0f;
 }
 
-float test(float3 vect)
-{
-    [branch]
-    if (abs(pow(vect.x, 3) * sin(vect.y) * (vect.x - cos(vect.y))) < 0.1)
-    {
-        return 2.0;
-    }
-    else
-    {
-        return 0.0;
-    }
-}
-
-
 float gyroid(float3 vect)
 {
     [branch]
@@ -129,9 +130,6 @@ float primitive(float3 vect)
     }
     return 2.0;
 }
-
-// mandelbulbSet3 mandelbulbSet8 MandelbarSet cubicSet gyroid primitive
-#define convFunc(a) mandelbulbSet8(a)
 
 float3 vertexInterp(float isolevel, float3 p1, float3 p2, float valp1, float valp2)
 {
