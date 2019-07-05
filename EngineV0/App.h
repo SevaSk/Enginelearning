@@ -17,7 +17,6 @@ private:
 	Window wnd;
 	Timer timer;
 	std::vector<std::unique_ptr<class Drawable>> drawables;
-	std::vector<std::unique_ptr<class Fractal>> fractals;
 	Camera cam{ wnd.mouse };
 	static constexpr size_t nDrawables = 180;
 };

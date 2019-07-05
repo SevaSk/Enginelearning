@@ -1,10 +1,10 @@
-#include "ComputeShaderFractal.h"
+#include "ComputeShaderGraph.h"
 #include "BindableBase.h"
 #include "GraphicsThrowMacros.h"
 #include "MarchingCubesIso.h"
 
 
-ComputeShaderFractal::ComputeShaderFractal(Graphics& gfx)
+ComputeShaderGraph::ComputeShaderGraph(Graphics& gfx)
 {
 	namespace dx = DirectX;
 
@@ -44,7 +44,7 @@ ComputeShaderFractal::ComputeShaderFractal(Graphics& gfx)
 
 }
 
-void ComputeShaderFractal::Update(float dt) noexcept
+void ComputeShaderGraph::Update(float dt) noexcept
 {
 	roll += droll * dt;
 	pitch += dpitch * dt;
@@ -55,7 +55,7 @@ void ComputeShaderFractal::Update(float dt) noexcept
 }
 
 
-DirectX::XMMATRIX ComputeShaderFractal::GetTransformXM() const noexcept
+DirectX::XMMATRIX ComputeShaderGraph::GetTransformXM() const noexcept
 {
 	namespace dx = DirectX;
 	return 

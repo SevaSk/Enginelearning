@@ -1,12 +1,11 @@
 #pragma once
 
 #include "DrawableBase.h"
-#include "ConvergenceFuncs.h"
 
-class ComputeShaderFractal : public DrawableBase<ComputeShaderFractal>
+class ComputeShaderGraph : public DrawableBase<ComputeShaderGraph>
 {
 public:
-	ComputeShaderFractal(Graphics& gfx);
+	ComputeShaderGraph(Graphics& gfx);
 	void Update(float dt) noexcept override;
 	DirectX::XMMATRIX GetTransformXM() const noexcept override;
 
@@ -23,7 +22,7 @@ private:
 	float dpitch = 0.0f;
 	float dyaw = 0.0f;
 	float dtheta = 0.0f;
-	float dphi = 1.0f;
+	float dphi = 0.5f;
 	float dchi = 0.0f;
 	// model transform
 	DirectX::XMFLOAT3X3 mt;

@@ -74,11 +74,24 @@ float mandelbulbSet8(float3 vect)
     return 0.0f;
 }
 
+float test(float3 vect)
+{
+    [branch]
+    if (abs(pow(vect.x, 3) * sin(vect.y) * (vect.x - cos(vect.y))) < 0.1)
+    {
+        return 2.0;
+    }
+    else
+    {
+        return 0.0;
+    }
+}
+
 
 float gyroid(float3 vect)
 {
     [branch]
-    if (abs(cos(vect.x) * sin(vect.y) + cos(vect.y) * sin(vect.z) + cos(vect.z) * sin(vect.x))  < 0.1)
+    if (abs(cos(vect.x) * sin(vect.y) + cos(vect.y) * sin(vect.z) + cos(vect.z) * sin(vect.x))  < 0.05)
     {
         return 0.0;
     }
@@ -227,9 +240,9 @@ static const uint THREAD_GROUP_SIZE_X = 7;
 static const uint THREAD_GROUP_SIZE_Y = 7;
 static const uint THREAD_GROUP_SIZE_Z = 7;
 
-static const uint GROUPS_Y = 52;
-static const uint GROUPS_X = 52;
-static const uint GROUPS_Z = 52;
+static const uint GROUPS_Y = 50;
+static const uint GROUPS_X = 50;
+static const uint GROUPS_Z = 50;
 static const float isolevel = 1.0;
 
 RWStructuredBuffer<BufferStruct> OutBuff : register(u0);

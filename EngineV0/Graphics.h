@@ -66,7 +66,6 @@ public:
 	void SetCamera(DirectX::FXMMATRIX cam) noexcept;
 	DirectX::XMMATRIX GetCamera() const noexcept;
 	void ClearBuffer(float red, float green, float blue) noexcept;
-	void DrawTestTriangle(const std::vector<float>& campos);
 private:
 	DirectX::XMMATRIX camera;
 	DirectX::XMMATRIX projection;

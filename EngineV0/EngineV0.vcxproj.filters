@@ -123,25 +123,16 @@
     <ClCompile Include="Mandlebulb.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Voxel.cpp">
-      <Filter>Source Files\Drawable</Filter>
-    </ClCompile>
-    <ClCompile Include="Fractal.cpp">
-      <Filter>Source Files\Drawable</Filter>
-    </ClCompile>
     <ClCompile Include="ComputeShader.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MarchingCubeFractal.cpp">
-      <Filter>Source Files\Drawable</Filter>
-    </ClCompile>
-    <ClCompile Include="ComputeShaderFractal.cpp">
-      <Filter>Source Files\Drawable</Filter>
     </ClCompile>
     <ClCompile Include="ConvergenceFuncs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Sheet.cpp">
+      <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="ComputeShaderGraph.cpp">
       <Filter>Source Files\Drawable</Filter>
     </ClCompile>
   </ItemGroup>
@@ -272,13 +263,7 @@
     <ClInclude Include="TriangleStrip.h">
       <Filter>Header Files\Geometry</Filter>
     </ClInclude>
-    <ClInclude Include="Voxel.h">
-      <Filter>Header Files\Drawable</Filter>
-    </ClInclude>
     <ClInclude Include="ConvergenceFuncs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Fractal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MarchingCubesIso.h">
@@ -287,16 +272,13 @@
     <ClInclude Include="MarchingCubesLookUpTable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MarchingCubeFractal.h">
-      <Filter>Header Files\Drawable</Filter>
-    </ClInclude>
     <ClInclude Include="Sampler.h">
       <Filter>Header Files\Bindable</Filter>
     </ClInclude>
     <ClInclude Include="ComputeShader.h">
       <Filter>Header Files\Bindable</Filter>
     </ClInclude>
-    <ClInclude Include="ComputeShaderFractal.h">
+    <ClInclude Include="ComputeShaderGraph.h">
       <Filter>Header Files\Drawable</Filter>
     </ClInclude>
   </ItemGroup>
