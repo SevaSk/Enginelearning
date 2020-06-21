@@ -1,7 +1,6 @@
 #pragma once
 #include "CustomWin.h"
 #include <vector>
-#include <string>
 
 //TODO learn this 
 class DxgiInfoManager

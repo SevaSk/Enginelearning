@@ -11,7 +11,7 @@
 #include "ComputeShaderGraph.h"
 
 App::App():
-	wnd(1920, 1080, "SK Engine")
+	wnd(800,600, "SK Engine")
 {
 	class Factory
 	{
