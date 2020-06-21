@@ -159,7 +159,6 @@ float3 p;
    p.z = p1.z + mu * (p2.z - p1.z);
 
    return(p);
-
 }
 
 
